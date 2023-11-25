@@ -1,8 +1,9 @@
 using System.Runtime.CompilerServices;
 
-namespace EspacioTarea;
+namespace tl2_tp10_2023_JavvG.Models;
 
-public enum EstadoTarea {
+public enum EstadoTarea 
+{
     Ideas,
     ToDo,
     Doing,
@@ -10,7 +11,8 @@ public enum EstadoTarea {
     Done
 }
 
-public class Tarea {
+public class Tarea 
+{
 
     private int id;
     private int idTablero;

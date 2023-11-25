@@ -1,17 +1,20 @@
 using System.Data.SQLite;
-using EspacioInterfazTablero;
-using EspacioTablero;
-using EspacioUsuario;
+using tl2_tp10_2023_JavvG.Models;
 
-public class TableroRepository : ITableroRepository {
+namespace tl2_tp10_2023_JavvG.Repositories;
+
+public class TableroRepository : ITableroRepository
+{
 
     private readonly string connectionString = "Data Source=DB/kanban.db;Cache=Shared";
 
-    public Tablero Create(Tablero tablero) {
+    public Tablero Create(Tablero tablero)
+    {
         
         var query = @"INSERT INTO Tablero (id_usuario_propietario, nombre, descripcion) VALUES (@id_usuario, @nombre_tablero, @descripcion_tablero);";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
 
             connection.Open();
 
@@ -31,21 +34,25 @@ public class TableroRepository : ITableroRepository {
 
     }
 
-    public List<Tablero> GetAll() {
+    public List<Tablero> GetAll()
+    {
 
         List<Tablero> tableros = new();
         
         var query = @"SELECT * FROM Tablero;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
 
             connection.Open();
 
             var command = new SQLiteCommand(query, connection);
 
-            using (var reader = command.ExecuteReader()) {
+            using (var reader = command.ExecuteReader())
+            {
 
-                while (reader.Read()) {
+                while (reader.Read())
+                {
 
                     var tablero = new Tablero();
 
@@ -68,7 +75,8 @@ public class TableroRepository : ITableroRepository {
 
     }
 
-    public Tablero GetById(int id) {
+    public Tablero GetById(int id)
+    {
         
         List<Tablero> tableros = new();
 
@@ -80,7 +88,8 @@ public class TableroRepository : ITableroRepository {
 
     }
 
-    public List<Tablero> GetByUserId(int idUsuario) {
+    public List<Tablero> GetByUserId(int idUsuario)
+    {
         
         List<Tablero> tableros = new();
 
@@ -92,11 +101,13 @@ public class TableroRepository : ITableroRepository {
 
     }
 
-    public void Delete(int id) {
+    public void Delete(int id)
+    {
         
         var query = @"DELETE FROM Tablero WHERE Tablero.id = (@id_buscado);";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
 
             connection.Open();
 
@@ -112,11 +123,13 @@ public class TableroRepository : ITableroRepository {
 
     }
 
-    public void Update(int id, Usuario usuario) {
+    public void Update(int id, Usuario usuario)
+    {
         
         var query = @"UPDATE Tablero SET id_usuario_asignado = @nuevo_id_usuario, nombre = @nuevo_nombre, descripcion = @nueva_descripcion WHERE id = @id_buscado;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
 
             connection.Open();
 

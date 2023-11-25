@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data.SQLite;
-using EspacioUsuario;
-using EspacioInterfazUsuario;
+using tl2_tp10_2023_JavvG.Models;
+
+namespace tl2_tp10_2023_JavvG.Repositories;
 
 
-public class UsuarioRepository : IUsuarioRepository {
+public class UsuarioRepository : IUsuarioRepository 
+{
 
     private readonly string connectionString = "Data Source=DB/kanban.db;Cache=Shared";
 
-    public void Create(Usuario usuario) {
+    public void Create(Usuario usuario) 
+    {
 
         var query = @"INSERT INTO Usuario (nombre_de_usuario) VALUES (@nombre_de_usuario);";      // Consulta SQL
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
             
             connection.Open();      // Inicio de conexión con la BD
             
@@ -31,11 +35,13 @@ public class UsuarioRepository : IUsuarioRepository {
 
     }
 
-    public void Update(int id, Usuario usuario) {
+    public void Update(int id, Usuario usuario) 
+    {
 
         var query = @"UPDATE Usuario SET nombre_de_usuario = @nuevo_nombre WHERE id = @id_buscado;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
@@ -52,21 +58,25 @@ public class UsuarioRepository : IUsuarioRepository {
 
     }
 
-    public List<Usuario> GetAll() {
+    public List<Usuario> GetAll() 
+    {
 
         List<Usuario> usuarios = new();
         
         var query = @"SELECT * FROM Usuario;";
         
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
             var command = new SQLiteCommand(query, connection);
 
-            using (var reader = command.ExecuteReader()) {      // Lectura de tuplas
+            using (var reader = command.ExecuteReader()) 
+            {      // Lectura de tuplas
 
-                while (reader.Read()) {
+                while (reader.Read()) 
+                {
 
                     var usuario = new Usuario();
 
@@ -86,7 +96,8 @@ public class UsuarioRepository : IUsuarioRepository {
 
     }
 
-    public Usuario GetById(int id) {
+    public Usuario GetById(int id) 
+    {
 
         List<Usuario> usuarios = new();
         
@@ -98,11 +109,13 @@ public class UsuarioRepository : IUsuarioRepository {
         
     }
 
-    public void Delete(int id) {
+    public void Delete(int id) 
+    {
 
         var query = @"DELETE FROM Usuario WHERE Usuario.id = (@id_buscado);";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 

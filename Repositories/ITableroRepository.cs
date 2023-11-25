@@ -1,9 +1,9 @@
-using EspacioTablero;
-using EspacioUsuario;
+using tl2_tp10_2023_JavvG.Models;
 
-namespace EspacioInterfazTablero;
+namespace tl2_tp10_2023_JavvG.Repositories;
 
-public interface ITableroRepository {
+public interface ITableroRepository 
+{
 
     public Tablero Create(Tablero tablero);
     public void Update(int id, Usuario usuario);

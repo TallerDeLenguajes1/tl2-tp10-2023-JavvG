@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data.SQLite;
-using EspacioInterfazTarea;
-using EspacioTarea;
+using tl2_tp10_2023_JavvG.Models;
 
-public class TareaRepository : ITareaRepository {
+namespace tl2_tp10_2023_JavvG.Repositories;
+
+public class TareaRepository : ITareaRepository 
+{
 
     private readonly string connectionString = "Data Source=DB/kanban.db;Cache=Shared";
 
-    public void Assign(int idUsuario, int idTarea) {
+    public void Assign(int idUsuario, int idTarea) 
+    {
         
         var query = @"UPDATE Tarea SET id_usuario_asignado = @id_usuario WHERE id = @id_tarea;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
@@ -31,11 +35,13 @@ public class TareaRepository : ITareaRepository {
 
     }
 
-    public Tarea Create(int idTablero, Tarea tarea) {
+    public Tarea Create(int idTablero, Tarea tarea) 
+    {
 
         var query = @"INSERT INTO tarea (id_tablero, nombre, estado, descripcion, color, id_usuario_asignado) VALUES (@id_tablero, @nombre, @estado, @descripcion, @color, @id_usuario_asignado);";
 
-        using (var connection = new SQLiteConnection(connectionString)) {
+        using (var connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
@@ -58,21 +64,25 @@ public class TareaRepository : ITareaRepository {
 
     }
 
-    public List<Tarea> GetAll() {
+    public List<Tarea> GetAll() 
+    {
 
         List<Tarea> tareas = new();
 
         var query = @"SELECT * FROM Tarea;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
             var command = new SQLiteCommand(query, connection);
 
-            using (var reader = command.ExecuteReader()) {
+            using (var reader = command.ExecuteReader()) 
+            {
 
-                while (reader.Read()) {
+                while (reader.Read()) 
+                {
 
                     var tarea = new Tarea();
 
@@ -82,7 +92,8 @@ public class TareaRepository : ITareaRepository {
 
                     var read = reader["estado"].ToString();
                     EstadoTarea estado;
-                    if(Enum.TryParse(read, out estado)) {
+                    if(Enum.TryParse(read, out estado)) 
+                    {
                         tarea.Estado = estado;
                     }
 
@@ -103,13 +114,15 @@ public class TareaRepository : ITareaRepository {
         return tareas;
     }
 
-    public List<Tarea> GetByTableroId(int idTablero) {
+    public List<Tarea> GetByTableroId(int idTablero) 
+    {
         
         List<Tarea> tareas = new();
 
         var query = @"SELECT * FROM Tarea WHERE id_tablero = @id_tablero;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
@@ -117,9 +130,11 @@ public class TareaRepository : ITareaRepository {
 
             command.Parameters.Add(new SQLiteParameter("@id_tablero", idTablero));
 
-            using (var reader = command.ExecuteReader()) {
+            using (var reader = command.ExecuteReader()) 
+            {
 
-                while (reader.Read()) {
+                while (reader.Read()) 
+                {
 
                     var tarea = new Tarea();
 
@@ -129,7 +144,8 @@ public class TareaRepository : ITareaRepository {
 
                     var read = reader["estado"].ToString();
                     EstadoTarea estado;
-                    if(Enum.TryParse(read, out estado)) {
+                    if(Enum.TryParse(read, out estado)) 
+                    {
                         tarea.Estado = estado;
                     }
 
@@ -151,13 +167,15 @@ public class TareaRepository : ITareaRepository {
 
     }
 
-    public Tarea GetById(int id) {
+    public Tarea GetById(int id) 
+    {
         
         Tarea tarea = new();
 
         var query = @"SELECT * FROM Tarea WHERE id = @id_tarea;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
@@ -165,9 +183,11 @@ public class TareaRepository : ITareaRepository {
 
             command.Parameters.Add(new SQLiteParameter("@id_tarea", id));
 
-            using (var reader = command.ExecuteReader()) {
+            using (var reader = command.ExecuteReader()) 
+            {
 
-                while (reader.Read()) {
+                while (reader.Read()) 
+                {
 
                     tarea.Id = Convert.ToInt32(reader["id"]);
                     tarea.IdTablero = Convert.ToInt32(reader["id_tablero"]);
@@ -175,7 +195,8 @@ public class TareaRepository : ITareaRepository {
 
                     var read = reader["estado"].ToString();
                     EstadoTarea estado;
-                    if(Enum.TryParse(read, out estado)) {
+                    if(Enum.TryParse(read, out estado)) 
+                    {
                         tarea.Estado = estado;
                     }
 
@@ -195,13 +216,15 @@ public class TareaRepository : ITareaRepository {
 
     }
 
-    public List<Tarea> GetByUsuarioId(int idUsuario) {
+    public List<Tarea> GetByUsuarioId(int idUsuario) 
+    {
 
         List<Tarea> tareas = new();
 
         var query = @"SELECT * FROM Tarea  WHERE id_usuario_asignado = @id_usuario;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
@@ -209,9 +232,11 @@ public class TareaRepository : ITareaRepository {
 
             command.Parameters.Add(new SQLiteParameter("@id_usuario", idUsuario));
 
-            using (var reader = command.ExecuteReader()) {
+            using (var reader = command.ExecuteReader()) 
+            {
 
-                while (reader.Read()) {
+                while (reader.Read()) 
+                {
 
                     var tarea = new Tarea();
 
@@ -221,7 +246,8 @@ public class TareaRepository : ITareaRepository {
 
                     var read = reader["estado"].ToString();
                     EstadoTarea estado;
-                    if(Enum.TryParse(read, out estado)) {
+                    if(Enum.TryParse(read, out estado)) 
+                    {
                         tarea.Estado = estado;
                     }
 
@@ -243,11 +269,13 @@ public class TareaRepository : ITareaRepository {
 
     }
 
-    public void Delete(int idTarea) {
+    public void Delete(int idTarea) 
+    {
         
         var query = @"DELETE FROM Tarea WHERE Tarea.id = (@id_buscado);";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 
@@ -263,11 +291,13 @@ public class TareaRepository : ITareaRepository {
 
     }
 
-    public void Update(int id, Tarea tarea) {
+    public void Update(int id, Tarea tarea) 
+    {
         
         var query = @"UPDATE Tarea SET id_tablero = @nuevo_id_talero, nombre = @nuevo_nombre, estado = @nuevo_estado, descripcion = @nueva_descripcion, color = @nuevo_color, id_usuario_asignado = @nuevo_id_usuario WHERE id = @id_tarea;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) {
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        {
 
             connection.Open();
 

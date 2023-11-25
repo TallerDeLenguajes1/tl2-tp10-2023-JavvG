@@ -1,6 +1,7 @@
-namespace EspacioTablero;
+namespace tl2_tp10_2023_JavvG.Models;
 
-public class Tablero {
+public class Tablero 
+{
 
     private int id;
     private int idUsuarioPropietario;

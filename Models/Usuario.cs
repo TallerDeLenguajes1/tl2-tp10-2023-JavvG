@@ -1,6 +1,7 @@
-namespace EspacioUsuario;
+namespace tl2_tp10_2023_JavvG,Models;
 
-public class Usuario {
+public class Usuario 
+{
 
     private int id;
     private string nombre;

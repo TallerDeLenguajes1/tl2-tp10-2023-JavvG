@@ -1,8 +1,9 @@
-using EspacioTarea;
+using tl2_tp10_2023_JavvG.Models;
 
-namespace EspacioInterfazTarea;
+namespace tl2_tp10_2023_JavvG.Repositories;
 
-public interface ITareaRepository {
+public interface ITareaRepository 
+{
 
     public Tarea Create(int idTablero, Tarea tarea);
     public void Update(int id, Tarea tarea);
