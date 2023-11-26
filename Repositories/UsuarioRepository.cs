@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Data.SQLite;
 using tl2_tp10_2023_JavvG.Models;
 
@@ -109,10 +105,12 @@ public class UsuarioRepository : IUsuarioRepository
         
     }
 
-    public void Delete(int id) 
+    public int Delete(int id) 
     {
 
         var query = @"DELETE FROM Usuario WHERE Usuario.id = (@id_buscado);";
+
+        int result = 0;
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
         {
@@ -123,11 +121,13 @@ public class UsuarioRepository : IUsuarioRepository
 
             command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
             
-            command.ExecuteNonQuery();
+            result = command.ExecuteNonQuery();     // Indica el número de tuplas afectadas en la BD. Si se elimina efectivamente una tupla, entonces retorna un número distinto de cero
 
             connection.Close();
             
         }
+
+        return result;
 
     }
     

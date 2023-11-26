@@ -2,9 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>tl2_tp10_2023_JavvG</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.118" />   <!-- Esto debe ir para poder usar la BD de SQLite -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DB\kanban.db">    <!-- Esto debe ir para poder acceder a la BD -->
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

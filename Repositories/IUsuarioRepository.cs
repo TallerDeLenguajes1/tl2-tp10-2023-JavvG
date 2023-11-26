@@ -8,5 +8,5 @@ public interface IUsuarioRepository
     public void Update(int id, Usuario usuario);
     public List<Usuario> GetAll();
     public Usuario GetById(int id);
-    public void Delete(int id);
+    public int Delete(int id);
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Data.SQLite;
 using tl2_tp10_2023_JavvG.Models;
 

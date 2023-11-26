@@ -1,4 +1,4 @@
-namespace tl2_tp10_2023_JavvG,Models;
+namespace tl2_tp10_2023_JavvG.Models;
 
 public class Usuario 
 {
