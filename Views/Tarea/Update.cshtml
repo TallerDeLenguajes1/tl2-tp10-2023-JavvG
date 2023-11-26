@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Modificar tarea";
+}
+
+@model Tarea
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <form asp-controller="Tarea" asp-action="Update" method="post" autocomplete="off">
+        <div class="mb-3">
+            <input hidden asp-for="@Model.Id">
+            <input hidden asp-for="@Model.IdTablero" value=@Model.IdTablero>
+            <label for="nombre" class="form-label">Nuevo nombre</label>
+            <input asp-for="@Model.Nombre" value="@Model.Nombre" type="text" class="form-control" id="nombre">
+            <label for="descripcion" class="form-label">Nueva descripción</label>
+            <input asp-for="@Model.Descripcion" value="@Model.Descripcion" type="text" class="form-control" id="descripcion">
+            <label for="color" class="form-label">Nuevo color</label>
+            <input asp-for="@Model.Color" value="@Model.Color" type="text" class="form-control" id="color" required>
+            <label for="estado" class="form-label">Seleccione el estado</label>
+            <select asp-for="@Model.Estado" class="form-control" id="estado" required>
+                @foreach (var estado in Enum.GetValues(typeof(EstadoTarea)))
+                {
+                    <option value="@estado">@estado</option>
+                }
+            </select>
+            @* <label for="estado" class="form-label">Nuevo estado</label>
+            <select asp-for="@Model.Estado" asp-items="Html.GetEnumSelectList<EstadoTarea>()" class="form-control" id="estado" required></select> *@
+            @* <label for="Estado" class="form-label">Estado</label>
+            <select asp-for="@Model.Estado" class="form-control" id="Estado">
+                <option value="Ideas">Ideas</option>
+                <option value="ToDo">ToDo</option>
+                <option value="Doing">Doing</option>
+                <option value="Review">Review</option>
+                <option value="Done">Done</option>
+            </select> *@
+            <input hidden asp-for="@Model.IdUsuarioAsignado" value=@Model.IdUsuarioAsignado>
+        </div>
+        <button type="submit" class="btn btn-primary">Modificar</button>
+        <a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

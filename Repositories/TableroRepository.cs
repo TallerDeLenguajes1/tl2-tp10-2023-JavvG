@@ -148,8 +148,6 @@ public class TableroRepository : ITableroRepository
 
             connection.Close();
 
-            connection.Close();
-
         }
 
     }

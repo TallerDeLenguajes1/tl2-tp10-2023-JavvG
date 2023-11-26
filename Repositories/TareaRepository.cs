@@ -48,7 +48,17 @@ public class TareaRepository : ITareaRepository
             command.Parameters.Add(new SQLiteParameter("@estado", tarea.Estado));
             command.Parameters.Add(new SQLiteParameter("@descripcion", tarea.Descripcion));
             command.Parameters.Add(new SQLiteParameter("@color", tarea.Color));
-            command.Parameters.Add(new SQLiteParameter("@id_usuario_asignado", tarea.IdUsuarioAsignado));
+
+            // Manejar el caso de id_usuario_asignado nulo
+
+            if (tarea.IdUsuarioAsignado.HasValue)
+            {
+                command.Parameters.Add(new SQLiteParameter("@id_usuario_asignado", tarea.IdUsuarioAsignado.Value));
+            }
+            else
+            {
+                command.Parameters.Add(new SQLiteParameter("@id_usuario_asignado", DBNull.Value));
+            }
 
             command.ExecuteNonQuery();
 
@@ -95,7 +105,16 @@ public class TareaRepository : ITareaRepository
 
                     tarea.Descripcion = reader["descripcion"].ToString();
                     tarea.Color = reader["color"].ToString();
-                    tarea.IdUsuarioAsignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+
+                     // Manejar el caso de id_usuario_asignado nulo
+                    if (reader["id_usuario_asignado"] != DBNull.Value)
+                    {
+                        tarea.IdUsuarioAsignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+                    }
+                    else
+                    {
+                        tarea.IdUsuarioAsignado = null;
+                    }
 
                     tareas.Add(tarea);
 
@@ -147,7 +166,17 @@ public class TareaRepository : ITareaRepository
 
                     tarea.Descripcion = reader["descripcion"].ToString();
                     tarea.Color = reader["color"].ToString();
-                    tarea.IdUsuarioAsignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+
+                     // Manejar el caso de id_usuario_asignado nulo
+
+                    if (reader["id_usuario_asignado"] != DBNull.Value)
+                    {
+                        tarea.IdUsuarioAsignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+                    }
+                    else
+                    {
+                        tarea.IdUsuarioAsignado = null;
+                    }
 
                     tareas.Add(tarea);
 
@@ -198,7 +227,17 @@ public class TareaRepository : ITareaRepository
 
                     tarea.Descripcion = reader["descripcion"].ToString();
                     tarea.Color = reader["color"].ToString();
-                    tarea.IdUsuarioAsignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+                    
+                    // Manejar el caso de id_usuario_asignado nulo
+
+                    if (reader["id_usuario_asignado"] != DBNull.Value)
+                    {
+                        tarea.IdUsuarioAsignado = Convert.ToInt32(reader["id_usuario_asignado"]);
+                    }
+                    else
+                    {
+                        tarea.IdUsuarioAsignado = null;
+                    }
 
                 }
 
@@ -217,7 +256,7 @@ public class TareaRepository : ITareaRepository
 
         List<Tarea> tareas = new();
 
-        var query = @"SELECT * FROM Tarea  WHERE id_usuario_asignado = @id_usuario;";
+        var query = @"SELECT * FROM Tarea  WHERE id_usuario_asignado = @id_usuario NOT NULL;";
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
         {
@@ -265,10 +304,12 @@ public class TareaRepository : ITareaRepository
 
     }
 
-    public void Delete(int idTarea) 
+    public int Delete(int idTarea) 
     {
         
         var query = @"DELETE FROM Tarea WHERE Tarea.id = (@id_buscado);";
+
+        int result = 0;
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
         {
@@ -279,18 +320,20 @@ public class TareaRepository : ITareaRepository
 
             command.Parameters.Add(new SQLiteParameter("@id_buscado", idTarea));
 
-            command.ExecuteNonQuery();
+            result = command.ExecuteNonQuery();
 
             connection.Close();
 
         }
+
+        return result;
 
     }
 
     public void Update(int id, Tarea tarea) 
     {
         
-        var query = @"UPDATE Tarea SET id_tablero = @nuevo_id_talero, nombre = @nuevo_nombre, estado = @nuevo_estado, descripcion = @nueva_descripcion, color = @nuevo_color, id_usuario_asignado = @nuevo_id_usuario WHERE id = @id_tarea;";
+        var query = @"UPDATE Tarea SET id_tablero = @nuevo_id_talero, nombre = @nuevo_nombre, estado = @nuevo_estado, descripcion = @nueva_descripcion, color = @nuevo_color, id_usuario_asignado = @nuevo_id_usuario WHERE id = @id_buscado;";
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
         {
@@ -304,8 +347,19 @@ public class TareaRepository : ITareaRepository
             command.Parameters.Add(new SQLiteParameter("@nuevo_estado", tarea.Estado));
             command.Parameters.Add(new SQLiteParameter("@nueva_descripcion", tarea.Descripcion));
             command.Parameters.Add(new SQLiteParameter("@nuevo_color", tarea.Color));
-            command.Parameters.Add(new SQLiteParameter("@nuevo_id_usuario", tarea.IdUsuarioAsignado));
-            command.Parameters.Add(new SQLiteParameter("@id_tarea", id));
+            
+            // Manejar el caso de id_usuario_asignado nulo
+
+            if (tarea.IdUsuarioAsignado.HasValue)
+            {
+                command.Parameters.Add(new SQLiteParameter("@nuevo_id_usuario", tarea.IdUsuarioAsignado.Value));
+            }
+            else
+            {
+                command.Parameters.Add(new SQLiteParameter("@nuevo_id_usuario", DBNull.Value));
+            }
+
+            command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
 
             command.ExecuteNonQuery();
 
