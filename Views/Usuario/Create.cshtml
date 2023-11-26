@@ -9,8 +9,9 @@
     <form asp-controller="Usuario" asp-action="Create" method="post" autocomplete="off">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
-            <input asp-for="@Model.Nombre" type="text" class="form-control" id="nombreUsuario" required>
+            <input asp-for="@Model.Nombre" type="text" class="form-control" id="nombre" required>
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
+        <a asp-controller="Usuario" asp-action="Index" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>

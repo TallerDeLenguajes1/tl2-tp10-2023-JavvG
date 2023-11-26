@@ -101,10 +101,12 @@ public class TableroRepository : ITableroRepository
 
     }
 
-    public void Delete(int id)
+    public int Delete(int id)
     {
         
         var query = @"DELETE FROM Tablero WHERE Tablero.id = (@id_buscado);";
+
+        int result = 0;
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
@@ -115,18 +117,20 @@ public class TableroRepository : ITableroRepository
 
             command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
 
-            command.ExecuteNonQuery();
+            result = command.ExecuteNonQuery();
 
             connection.Close();
 
         }
 
+        return result;
+
     }
 
-    public void Update(int id, Usuario usuario)
+    public void Update(int id, Tablero tablero)
     {
         
-        var query = @"UPDATE Tablero SET id_usuario_asignado = @nuevo_id_usuario, nombre = @nuevo_nombre, descripcion = @nueva_descripcion WHERE id = @id_buscado;";
+        var query = @"UPDATE Tablero SET id_usuario_propietario = @nuevo_id_usuario, nombre = @nuevo_nombre, descripcion = @nueva_descripcion WHERE id = @id_buscado;";
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString))
         {
@@ -135,7 +139,14 @@ public class TableroRepository : ITableroRepository
 
             var command = new SQLiteCommand(query, connection);
 
-            command.Parameters.Add(new SQLiteParameter("@nuevo_id_usuario", usuario.Id));
+            command.Parameters.Add(new SQLiteParameter("@nuevo_id_usuario", tablero.IdUsuarioPropietario));
+            command.Parameters.Add(new SQLiteParameter("@nuevo_nombre", tablero.Nombre));
+            command.Parameters.Add(new SQLiteParameter("@nueva_descripcion", tablero.Descripcion));
+            command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
+
+            command.ExecuteNonQuery();
+
+            connection.Close();
 
             connection.Close();
 
