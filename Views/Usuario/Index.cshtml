@@ -2,7 +2,7 @@
     ViewData["Title"] = "Usuarios";
 }
 
-@model List<Usuario>
+@model tl2_tp10_2023_JavvG.ViewModels.ListarUsuariosViewModel;
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Usuario U in Model)
+            @foreach (Usuario U in Model.Usuarios)
             {
                 <tr>
                     <th scope="row">@U.Id</th>

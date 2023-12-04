@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp10_2023_JavvG.Models;
 using tl2_tp10_2023_JavvG.Repositories;
+using tl2_tp10_2023_JavvG.ViewModels;
 
 namespace tl2_tp10_2023_JavvG.Controllers;
 
@@ -23,7 +24,8 @@ public class UsuarioController : Controller
     public IActionResult Index()
     {
         var users = usuarioRepository.GetAll();
-        return View(users);
+        var usersVM = new ListarUsuariosViewModel(users);
+        return View(usersVM);
     }
 
     // Creación de usuario. Recibe los datos de un usuario desde un formulario y los carga en la BD
