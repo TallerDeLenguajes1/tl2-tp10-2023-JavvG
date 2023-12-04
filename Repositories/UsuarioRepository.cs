@@ -23,7 +23,7 @@ public class UsuarioRepository : IUsuarioRepository
 
             command.Parameters.Add(new SQLiteParameter("@nombre_de_usuario", usuario.Nombre));
             command.Parameters.Add(new SQLiteParameter("@password", usuario.Password));
-            command.Parameters.Add(new SQLiteParameter("@rol". usuario.Rol));
+            command.Parameters.Add(new SQLiteParameter("@rol", usuario.Rol));
             
             command.ExecuteNonQuery();      // Ejecuta comandos como las instrucciones INSERT, DELETE, UPDATE.
 
@@ -138,6 +138,45 @@ public class UsuarioRepository : IUsuarioRepository
         }
 
         return result;
+
+    }
+
+    public Usuario GetLoggedUser(string nombre, string password) 
+    {
+    
+        var usuarioBuscado = new Usuario();
+
+        var query = @"SELECT * FROM Usuario WHERE (nombre_de_usuario = @nombreUsuario AND password = @password);";
+
+        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        {
+            connection.Open();
+
+            var command = new SQLiteCommand(query, connection);
+
+            command.Parameters.Add(new SQLiteParameter("@nombreUsuario", nombre));
+            command.Parameters.Add(new SQLiteParameter("@password", password));
+
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    usuarioBuscado.Id = Convert.ToInt32(reader["id"]);
+                    usuarioBuscado.Nombre = reader["nombre_de_usuario"].ToString();
+                    usuarioBuscado.Password = reader["password"].ToString();
+                    string read = reader["rol"].ToString();
+                    Rol rolUsuario;
+                    if (Enum.TryParse(read, out rolUsuario))
+                    {
+                        usuarioBuscado.Rol = rolUsuario;
+                    }
+                }
+            }
+
+            connection.Close();
+        }
+        return usuarioBuscado;
 
     }
     

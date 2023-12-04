@@ -9,4 +9,5 @@ public interface IUsuarioRepository
     public List<Usuario> GetAll();
     public Usuario GetById(int id);
     public int Delete(int id);
+    public Usuario GetLoggedUser(string nombre, string password);
 }
