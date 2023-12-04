@@ -12,7 +12,7 @@ public class UsuarioRepository : IUsuarioRepository
     public void Create(Usuario usuario) 
     {
 
-        var query = @"INSERT INTO Usuario (nombre_de_usuario) VALUES (@nombre_de_usuario);";      // Consulta SQL
+        var query = @"INSERT INTO Usuario (nombre_de_usuario, password, rol) VALUES (@nombre_de_usuario, @password, @rol);";      // Consulta SQL
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
         {
@@ -22,6 +22,8 @@ public class UsuarioRepository : IUsuarioRepository
             var command = new SQLiteCommand(query, connection);
 
             command.Parameters.Add(new SQLiteParameter("@nombre_de_usuario", usuario.Nombre));
+            command.Parameters.Add(new SQLiteParameter("@password", usuario.Password));
+            command.Parameters.Add(new SQLiteParameter("@rol". usuario.Rol));
             
             command.ExecuteNonQuery();      // Ejecuta comandos como las instrucciones INSERT, DELETE, UPDATE.
 
@@ -78,6 +80,14 @@ public class UsuarioRepository : IUsuarioRepository
 
                     usuario.Id = Convert.ToInt32(reader["id"]);
                     usuario.Nombre = reader["nombre_de_usuario"].ToString();
+                    usuario.Password = reader["password"].ToString();
+                    
+                    var read = reader["rol"].ToString();
+                    Rol rolUsuario;
+                    if(Enum.TryParse(read, out rolUsuario))
+                    {
+                        usuario.Rol = rolUsuario;
+                    }
 
                     usuarios.Add(usuario);
                     
