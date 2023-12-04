@@ -23,9 +23,18 @@ public class UsuarioController : Controller
 
     public IActionResult Index()
     {
-        var users = usuarioRepository.GetAll();
-        var usersVM = new ListarUsuariosViewModel(users);
-        return View(usersVM);
+
+        if (!string.IsNullOrEmpty(HttpContext.Session.GetString("nombreUsuario")) && (HttpContext.Session.GetString("rol")) == "administrador")
+        {
+            var users = usuarioRepository.GetAll();
+            var usersVM = new ListarUsuariosViewModel(users);
+            return View(usersVM);
+        }
+        else
+        {
+            return RedirectToRoute(new { controller = "Login", action = "Index" });
+        }
+
     }
 
     // Creación de usuario. Recibe los datos de un usuario desde un formulario y los carga en la BD
@@ -40,6 +49,7 @@ public class UsuarioController : Controller
     public IActionResult Create(Usuario usuario)
     {
         usuarioRepository.Create(usuario);
+
         return RedirectToAction("Index");       // Una vez creado el usuario, retorna a Index
     }
 
