@@ -1,13 +1,13 @@
 namespace tl2_tp10_2023_JavvG.Models;
 
+public enum Rol 
+{
+    administrador,
+    operador
+}
+
 public class Usuario 
 {
-
-    public enum Rol 
-    {
-        administrador,
-        operador
-    }
 
     private int id;
     private string nombre;
