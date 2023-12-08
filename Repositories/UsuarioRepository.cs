@@ -36,7 +36,7 @@ public class UsuarioRepository : IUsuarioRepository
     public void Update(int id, Usuario usuario) 
     {
 
-        var query = @"UPDATE Usuario SET nombre_de_usuario = @nuevo_nombre WHERE id = @id_buscado;";
+        var query = @"UPDATE Usuario SET nombre_de_usuario = @nuevo_nombre, password = @password, rol = @rol WHERE id = @id_buscado;";
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
         {
@@ -47,6 +47,8 @@ public class UsuarioRepository : IUsuarioRepository
 
             command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
             command.Parameters.Add(new SQLiteParameter("@nuevo_nombre", usuario.Nombre));
+            command.Parameters.Add(new SQLiteParameter("@password", usuario.Password));
+            command.Parameters.Add(new SQLiteParameter("@rol", usuario.Rol));
 
             command.ExecuteNonQuery();
             
