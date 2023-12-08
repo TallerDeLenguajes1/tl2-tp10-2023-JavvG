@@ -24,6 +24,15 @@ public class Usuario
 
     public Usuario(CrearUsuarioViewModel usuarioVM)
     {
+        Id = usuarioVM.Id;
+        Nombre = usuarioVM.Nombre;
+        Password = usuarioVM.Password;
+        Rol = usuarioVM.Rol;
+    }
+
+    public Usuario(ModificarUsuarioViewModel usuarioVM)
+    {
+        Id = usuarioVM.Id;
         Nombre = usuarioVM.Nombre;
         Password = usuarioVM.Password;
         Rol = usuarioVM.Rol;
