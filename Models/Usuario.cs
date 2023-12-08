@@ -1,4 +1,5 @@
 namespace tl2_tp10_2023_JavvG.Models;
+using tl2_tp10_2023_JavvG.ViewModels;
 
 public enum Rol 
 {
@@ -18,5 +19,14 @@ public class Usuario
     public string Nombre { get => nombre; set => nombre = value; }
     public string Password { get => password; set => password = value;}
     public Rol Rol { get => rol; set => rol = value;}
+
+    public Usuario() {}
+
+    public Usuario(CrearUsuarioViewModel usuarioVM)
+    {
+        Nombre = usuarioVM.Nombre;
+        Password = usuarioVM.Password;
+        Rol = usuarioVM.Rol;
+    }
 
 }
