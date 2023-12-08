@@ -60,13 +60,23 @@ public class UsuarioController : Controller
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(usuarioRepository.GetById(id));
+        if(!isAdmin()) return RedirectToAction("Index");
+
+        var usuario = usuarioRepository.GetById(id);
+        var usuarioVM = new ModificarUsuarioViewModel(usuario);
+
+        return View(usuarioVM);
     }
 
-    [HttpPost]      // No funciona con [HttpPut] - Consultar (!)
-    public IActionResult Update(int id, Usuario usuario)
+    [HttpPost]
+    public IActionResult Update(int id, ModificarUsuarioViewModel usuarioVM)
     {
+        if(!ModelState.IsValid) return RedirectToAction("Index");
+        if(!isAdmin()) return RedirectToAction("Index");
+
+        var usuario = new Usuario(usuarioVM);
         usuarioRepository.Update(id, usuario);
+
         return RedirectToAction("Index");
     }
 
@@ -91,6 +101,8 @@ public class UsuarioController : Controller
             return RedirectToAction("Error");
         }
     }
+
+    // Función que verifica que el usuario logueado sea 'administrador'
 
     private bool isAdmin()
     {
