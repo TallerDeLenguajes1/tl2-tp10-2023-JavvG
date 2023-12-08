@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp10_2023_JavvG.Models;
 using tl2_tp10_2023_JavvG.Repositories;
+using tl2_tp10_2023_JavvG.ViewModels;
 
 namespace tl2_tp10_2023_JavvG.Controllers;
 
@@ -22,7 +23,10 @@ public class TareaController : Controller
 
     public IActionResult Index()
     {
-        return View(tareaRepository.GetAll());
+        if (!isAdmin()) return RedirectToRoute(new { controller = "Login", action = "Index" });
+        var tareas = tareaRepository.GetAll();
+        var tareasVM = new ListarTareasViewModel(tareas);
+        return View(tareasVM);
     }
 
     // Crear tarea
@@ -75,6 +79,13 @@ public class TareaController : Controller
         {
             return RedirectToAction("Error");
         }
+    }
+
+    // Función que verifica que el usuario logueado sea 'administrador'
+
+    private bool isAdmin()
+    {
+        return (HttpContext.Session != null && HttpContext.Session.GetString("rol") == "administrador");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
