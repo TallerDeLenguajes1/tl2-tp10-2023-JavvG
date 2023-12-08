@@ -22,19 +22,15 @@ public class UsuarioController : Controller
     // Página principal - muestra todos los usuarios en una tabla
 
     public IActionResult Index()
-    {
+    {   
+        // El acceso a todos los usuarios esta permitido sólo para el usuario 'administrador'
 
-        if (!string.IsNullOrEmpty(HttpContext.Session.GetString("nombreUsuario")) && (HttpContext.Session.GetString("rol")) == "administrador")
-        {
-            var users = usuarioRepository.GetAll();
-            var usersVM = new ListarUsuariosViewModel(users);
-            return View(usersVM);
-        }
-        else
-        {
-            return RedirectToRoute(new { controller = "Login", action = "Index" });
-        }
+        if (!isAdmin()) return RedirectToRoute(new { controller = "Login", action = "Index" });
 
+        var users = usuarioRepository.GetAll();
+        var usersVM = new ListarUsuariosViewModel(users);
+
+        return View(usersVM);
     }
 
     // Creación de usuario. Recibe los datos de un usuario desde un formulario y los carga en la BD
@@ -42,15 +38,21 @@ public class UsuarioController : Controller
     [HttpGet]       // Para obtener la vista
     public IActionResult Create()
     {
-        return View(new Usuario());
+        if(!isAdmin()) return RedirectToAction("Index");
+
+        return View(new CrearUsuarioViewModel());
     }
 
     [HttpPost]      // Para añadir el usuario en la BD
-    public IActionResult Create(Usuario usuario)
+    public IActionResult Create(CrearUsuarioViewModel usuarioVM)        // Recibe el objeto view model desde el formulario
     {
-        usuarioRepository.Create(usuario);
+        if(!ModelState.IsValid) return RedirectToAction("Index");       // Si el modelo no está en su estado válido, se redirecciona a la página de inicio   
+        if(!isAdmin()) return RedirectToAction("Index");        // Si el usuario no es administrador, es redirigido a la página de inicio
 
-        return RedirectToAction("Index");       // Una vez creado el usuario, retorna a Index
+        var usuario = new Usuario(usuarioVM);
+        usuarioRepository.Create(usuario);
+        
+        return RedirectToAction("Index");
     }
 
     // Modificación de un usuario
@@ -88,6 +90,11 @@ public class UsuarioController : Controller
         {
             return RedirectToAction("Error");
         }
+    }
+
+    private bool isAdmin()
+    {
+        return (HttpContext.Session != null && HttpContext.Session.GetString("rol") == "administrador");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
