@@ -1,8 +1,10 @@
+@using tl2_tp10_2023_JavvG.ViewModels
+
 @{
     ViewData["Title"] = "Tareas";
 }
 
-@model List<Tarea>
+@model ListarTareasViewModel
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
@@ -20,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Tarea T in Model)
+            @foreach (Tarea T in Model.Tareas)
             {
                 <tr>
                     <td>@T.Id</td>
