@@ -23,4 +23,12 @@ public class Tablero
         Nombre = tableroVM.Nombre;
         Descripcion = tableroVM.Descripcion;
     }
+
+    public Tablero(ModificarTableroViewModel tableroVM)
+    {
+        Id = tableroVM.Id;
+        IdUsuarioPropietario = tableroVM.IdUsuarioPropietario;
+        Nombre = tableroVM.Nombre;
+        Descripcion = tableroVM.Descripcion;
+    }
 }
