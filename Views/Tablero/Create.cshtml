@@ -1,14 +1,31 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccesor
+@{
+    var session = HttpContextAccesor.HttpContext.Session;
+}
+
+@using tl2_tp10_2023_JavvG.ViewModels
+
 @{
     ViewData["Title"] = "Crear tablero";
 }
 
-@model Tablero
+@model CrearTableroViewModel
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Tablero" asp-action="Create" method="post" autocomplete="off">
         <div class="mb-3">
-            <input hidden asp-for = "@Model.IdUsuarioPropietario" value=1>
+            @if(session.GetString("rol") == "administrador")
+            {
+                <label for="idUsuarioPropietario" class="form-label">Indique el ID del usuario propietario</label>
+                <input asp-for="@Model.IdUsuarioPropietario" type="text" class="form-control" id="idUsuarioPropietario" required>
+            }
+            else
+            {
+                int idUsuario = int.Parse(session.GetString("id"));
+                <input hidden asp-for="@Model.IdUsuarioPropietario" value=@idUsuario>
+            }
             <label for="nombre" class="form-label">Nombre</label>
             <input asp-for="@Model.Nombre" type="text" class="form-control" id="nombre" required>
             <label for="descripcion" class="form-label">Descripción</label>
