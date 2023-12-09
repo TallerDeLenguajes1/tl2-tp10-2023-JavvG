@@ -28,7 +28,7 @@ public class CrearTareaViewModel
     public EstadoTarea Estado { get; set; }
 
     [Display(Name = "ID del usuario asignado")]
-    public int IdUsuarioAsignado { get; set; }
+    public int? IdUsuarioAsignado { get; set; }
 
     public CrearTareaViewModel() {}
 
