@@ -1,15 +1,31 @@
+@using tl2_tp10_2023_JavvG.ViewModels
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccesor
+@{
+    var session = HttpContextAccesor.HttpContext.Session;
+}
+
 @{
     ViewData["Title"] = "Modificar tablero";
 }
 
-@model Tablero
+@model ModificarTableroViewModel
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Tablero" asp-action="Update" method="post">
         <div class="mb-3">
             <input hidden asp-for="@Model.Id">
-            <input hidden asp-for="@Model.IdUsuarioPropietario">
+            @if(session.GetString("rol") == "administrador")
+            {
+                <label for="idUsuarioPropietario" class="form-label">Indique el ID del nuevo usuario propietario</label>
+                <input asp-for="@Model.IdUsuarioPropietario" type="text" class="form-control" id="idUsuarioPropietario" required>
+            }
+            else
+            {
+                int idUsuario = int.Parse(session.GetString("id"));
+                <input hidden asp-for="@Model.IdUsuarioPropietario" value=@idUsuario>
+            }
             <label for="nombre" class="form-label">Nuevo nombre</label>
             <input asp-for="@Model.Nombre" value="@Model.Nombre" type="text" class="form-control" id="nombre">
             <label for="descripcion" class="form-label">Nueva descripción</label>
