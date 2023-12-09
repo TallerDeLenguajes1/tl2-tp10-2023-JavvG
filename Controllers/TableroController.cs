@@ -56,18 +56,9 @@ public class TableroController : Controller
     {
         if(HttpContext.Session != null)
         {
-            if(isAdmin())
-            {
-                var tablero = new Tablero(tableroVM);
-                tableroRepository.Create(tablero);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                var tablero = new Tablero(tableroVM);
-                tableroRepository.Create(tablero);
-                return RedirectToAction("Index");
-            }
+            var tablero = new Tablero(tableroVM);
+            tableroRepository.Create(tablero);
+            return RedirectToAction("Index");
         }
         else
         {
@@ -81,14 +72,24 @@ public class TableroController : Controller
     [HttpGet]
     public IActionResult Update(int id) 
     {
-        return View(tableroRepository.GetById(id));
+        if(HttpContext.Session == null) return RedirectToRoute(new { controller = "Login", action = "Index" });
+        var tablero = tableroRepository.GetById(id);
+        return View(new ModificarTableroViewModel(tablero));
     }
 
     [HttpPost]
-    public IActionResult Update(int id, Tablero tablero)
+    public IActionResult Update(int id, ModificarTableroViewModel tableroVM)
     {
-        tableroRepository.Update(id, tablero);
-        return RedirectToAction("Index");
+        if(HttpContext.Session != null)
+        {
+            var tablero = new Tablero(tableroVM);
+            tableroRepository.Update(id, tablero);
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            return RedirectToRoute(new { controller = "Login", action = "Index" });
+        }
     }
 
     
