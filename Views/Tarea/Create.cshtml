@@ -1,22 +1,25 @@
+@using tl2_tp10_2023_JavvG.ViewModels
+
 @{
     ViewData["Title"] = "Crear tarea";
 }
 
-@model Tarea
+@model CrearTareaViewModel
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Tarea" asp-action="Create" method="post" autocomplete="off">
         <div class="mb-3">
             <input hidden asp-for = "@Model.IdTablero" value=1>
-            <label for="nombre" class="form-label">Nombre</label>
+            <label for="nombre" class="form-label">Título</label>
             <input asp-for="@Model.Nombre" type="text" class="form-control" id="nombre" required>
             <label for="descripcion" class="form-label">Descripción</label>
             <input asp-for="@Model.Descripcion" type="text" class="form-control" id="descripcion" required>
             <label for="color" class="form-label">Color</label>
             <input asp-for="@Model.Color" type="text" class="form-control" id="color" required>
+            <label for="usuarioAsignado" class="form-label">Indique el ID del usuario asignado para esta tarea</label>
+            <input asp-for="@Model.IdUsuarioAsignado" type="text" class="form-control" id="usuarioAsignado" required>
             <input hidden asp-for="@Model.Estado" value=1>
-            <input hidden asp-for="@Model.IdUsuarioAsignado" value=Null>
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
         <a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary">Cancelar</a>
