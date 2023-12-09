@@ -11,6 +11,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Se registra el servicio necesario para IHttpContextAccessor (usado en Tablero/Create.cshtml)
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
