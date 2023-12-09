@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using tl2_tp10_2023_JavvG.Models;
 using tl2_tp10_2023_JavvG.Repositories;
+using tl2_tp10_2023_JavvG.ViewModels;
 
 namespace tl2_tp10_2023_JavvG.Controllers;
 
@@ -22,7 +23,23 @@ public class TableroController : Controller
 
     public IActionResult Index() 
     {
-        return View(tableroRepository.GetAll());
+        if(HttpContext.Session != null) 
+        {
+            if(isAdmin())
+            {
+                var tableros = tableroRepository.GetAll();
+                return View(new ListarTablerosViewModel(tableros));
+            }
+            else 
+            {
+                var tableros = tableroRepository.GetByUserId(int.Parse(HttpContext.Session.GetString("id")));
+                return View(new ListarTablerosViewModel(tableros));
+            }
+        }
+        else 
+        {
+            return RedirectToRoute(new { controller = "Login", action = "Index" });
+        }  
     }
 
     // Crear tablero
@@ -76,6 +93,13 @@ public class TableroController : Controller
         {
             return RedirectToAction("Error");
         }
+    }
+
+    // Función que verifica que el usuario logueado sea 'administrador'
+
+    private bool isAdmin()
+    {
+        return (HttpContext.Session != null && HttpContext.Session.GetString("rol") == "administrador");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
