@@ -34,13 +34,19 @@ public class TareaController : Controller
     [HttpGet]
     public IActionResult Create() 
     {
-        return View(new Tarea());
+        if(!isAdmin()) return RedirectToAction("Index");
+        return View(new CrearTareaViewModel());
     }
 
     [HttpPost]
-    public IActionResult Create(Tarea tarea)
+    public IActionResult Create(CrearTareaViewModel tareaVM)
     {
+        if(!ModelState.IsValid) return RedirectToAction("Index");
+        if(!isAdmin()) return RedirectToAction("Index");
+        
+        var tarea = new Tarea(tareaVM);
         tareaRepository.Create(1, tarea);
+
         return RedirectToAction("Index");
     }
 
