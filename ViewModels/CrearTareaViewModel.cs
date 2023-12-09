@@ -29,4 +29,17 @@ public class CrearTareaViewModel
 
     [Display(Name = "ID del usuario asignado")]
     public int IdUsuarioAsignado { get; set; }
+
+    public CrearTareaViewModel() {}
+
+    public CrearTareaViewModel(Tarea tarea)
+    {
+        Id = tarea.Id;
+        IdTablero = tarea.IdTablero;
+        Nombre = tarea.Nombre;
+        Descripcion = tarea.Descripcion;
+        Color = tarea.Color;
+        Estado = tarea.Estado;
+        IdUsuarioAsignado = tarea.IdUsuarioAsignado;
+    }
 }
