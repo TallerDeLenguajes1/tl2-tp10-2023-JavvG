@@ -1,8 +1,9 @@
+using tl2_tp10_2023_JavvG.ViewModels;
+
 namespace tl2_tp10_2023_JavvG.Models;
 
 public class Tablero 
 {
-
     private int id;
     private int idUsuarioPropietario;
     private string nombre;
@@ -13,4 +14,13 @@ public class Tablero
     public string Nombre { get => nombre; set => nombre = value; }
     public string Descripcion { get => descripcion; set => descripcion = value; }
 
+    public Tablero() {}
+
+    public Tablero(CrearTableroViewModel tableroVM)
+    {
+        Id = tableroVM.Id;
+        IdUsuarioPropietario = tableroVM.IdUsuarioPropietario;
+        Nombre = tableroVM.Nombre;
+        Descripcion = tableroVM.Descripcion;
+    }
 }
