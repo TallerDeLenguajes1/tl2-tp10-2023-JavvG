@@ -44,5 +44,14 @@ public class Tarea
         IdUsuarioAsignado = tareaVM.IdUsuarioAsignado;
     }
 
-
+    public Tarea(ModificarTareaViewModel tareaVM) 
+    {
+        Id = tareaVM.Id;
+        IdTablero = tareaVM.IdTablero;
+        Nombre = tareaVM.Nombre;
+        Descripcion = tareaVM.Descripcion;
+        Color = tareaVM.Color;
+        Estado = tareaVM.Estado;
+        IdUsuarioAsignado = tareaVM.IdUsuarioAsignado;
+    }
 }
