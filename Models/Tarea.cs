@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using tl2_tp10_2023_JavvG.ViewModels;
 
 namespace tl2_tp10_2023_JavvG.Models;
 
@@ -29,5 +30,19 @@ public class Tarea
     public string Color { get => color; set => color = value; }
     public EstadoTarea Estado { get => estado; set => estado = value; }
     public int? IdUsuarioAsignado { get => idUsuarioAsignado; set => idUsuarioAsignado = value; }
+
+    public Tarea() {}
+
+    public Tarea(CrearTareaViewModel tareaVM) 
+    {
+        Id = tareaVM.Id;
+        IdTablero = tareaVM.IdTablero;
+        Nombre = tareaVM.Nombre;
+        Descripcion = tareaVM.Descripcion;
+        Color = tareaVM.Color;
+        Estado = tareaVM.Estado;
+        IdUsuarioAsignado = tareaVM.IdUsuarioAsignado;
+    }
+
 
 }
