@@ -43,7 +43,7 @@ public class TareaController : Controller
     {
         if(!ModelState.IsValid) return RedirectToAction("Index");
         if(!isAdmin()) return RedirectToAction("Index");
-        
+
         var tarea = new Tarea(tareaVM);
         tareaRepository.Create(1, tarea);
 
@@ -55,13 +55,23 @@ public class TareaController : Controller
     [HttpGet]
     public IActionResult Update(int id)
     {
-        return View(tareaRepository.GetById(id));
+        if(!isAdmin()) return RedirectToAction("Index");
+
+        var tarea = tareaRepository.GetById(id);
+        var tareaVM = new ModificarTareaViewModel(tarea);
+
+        return View(tareaVM);
     }
 
     [HttpPost]
-    public IActionResult Update(int id, Tarea tarea)
+    public IActionResult Update(int id, ModificarTareaViewModel tareaVM)
     {
+        if(!ModelState.IsValid) return RedirectToAction("Index");
+        if(!isAdmin()) return RedirectToAction("Index");
+
+        var tarea = new Tarea(tareaVM);
         tareaRepository.Update(id, tarea);
+
         return RedirectToAction("Index");
     }
 
