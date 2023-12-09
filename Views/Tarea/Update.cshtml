@@ -1,8 +1,10 @@
+@using tl2_tp10_2023_JavvG.ViewModels
+
 @{
     ViewData["Title"] = "Modificar tarea";
 }
 
-@model Tarea
+@model ModificarTareaViewModel
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
@@ -10,7 +12,7 @@
         <div class="mb-3">
             <input hidden asp-for="@Model.Id">
             <input hidden asp-for="@Model.IdTablero" value=@Model.IdTablero>
-            <label for="nombre" class="form-label">Nuevo nombre</label>
+            <label for="nombre" class="form-label">Nuevo título</label>
             <input asp-for="@Model.Nombre" value="@Model.Nombre" type="text" class="form-control" id="nombre">
             <label for="descripcion" class="form-label">Nueva descripción</label>
             <input asp-for="@Model.Descripcion" value="@Model.Descripcion" type="text" class="form-control" id="descripcion">
@@ -33,7 +35,8 @@
                 <option value="Review">Review</option>
                 <option value="Done">Done</option>
             </select> *@
-            <input hidden asp-for="@Model.IdUsuarioAsignado" value=@Model.IdUsuarioAsignado>
+            <label for="usuarioAsignado" class="form-label">Indique el ID del nuevo usuario asignado para esta tarea</label>
+            <input asp-for="@Model.IdUsuarioAsignado" type="text" class="form-control" id="usuarioAsignado" required>
         </div>
         <button type="submit" class="btn btn-primary">Modificar</button>
         <a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary">Cancelar</a>
