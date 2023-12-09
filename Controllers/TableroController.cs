@@ -47,14 +47,33 @@ public class TableroController : Controller
     [HttpGet]
     public IActionResult Create() 
     {
-        return View(new Tablero());
+        if(HttpContext.Session == null) return RedirectToRoute(new { controller = "Login", action = "Index" });
+        return View(new CrearTableroViewModel());
     }
 
     [HttpPost]
-    public IActionResult Create(Tablero tablero)
+    public IActionResult Create(CrearTableroViewModel tableroVM)
     {
-        tableroRepository.Create(tablero);
-        return RedirectToAction("Index");
+        if(HttpContext.Session != null)
+        {
+            if(isAdmin())
+            {
+                var tablero = new Tablero(tableroVM);
+                tableroRepository.Create(tablero);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var tablero = new Tablero(tableroVM);
+                tableroRepository.Create(tablero);
+                return RedirectToAction("Index");
+            }
+        }
+        else
+        {
+            return RedirectToRoute(new { controller = "Login", action = "Index" });
+        }
+
     }
 
     // Modificar tablero
