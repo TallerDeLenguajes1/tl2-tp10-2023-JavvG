@@ -27,8 +27,7 @@ public class TareaController : Controller
         if(isAdmin())
         {
             var tareas = tareaRepository.GetAll();
-            var tareasVM = new ListarTareasViewModel(tareas);
-            return View(tareasVM);
+            return View(new ListarTareasViewModel(tareas));
         }
         else 
         {
