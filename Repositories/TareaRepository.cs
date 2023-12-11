@@ -167,7 +167,7 @@ public class TareaRepository : ITareaRepository
                     tarea.Descripcion = reader["descripcion"].ToString();
                     tarea.Color = reader["color"].ToString();
 
-                     // Manejar el caso de id_usuario_asignado nulo
+                    // Manejar el caso de id_usuario_asignado nulo
 
                     if (reader["id_usuario_asignado"] != DBNull.Value)
                     {
@@ -256,7 +256,7 @@ public class TareaRepository : ITareaRepository
 
         List<Tarea> tareas = new();
 
-        var query = @"SELECT * FROM Tarea  WHERE id_usuario_asignado = @id_usuario NOT NULL;";
+        var query = @"SELECT * FROM Tarea  WHERE id_usuario_asignado = @id_usuario AND id_usuario_asignado IS NOT NULL;";
 
         using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
         {
