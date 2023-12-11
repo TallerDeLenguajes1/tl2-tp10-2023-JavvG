@@ -14,12 +14,12 @@ public class ModificarTareaViewModel
 
     [Required(ErrorMessage = "Este campo es requerido")]
     [Display(Name = "Título")]
-    [StringLength(100, ErrorMessage = "El nombre del tablero no puede tener mas de 100 caracteres")]
+    [StringLength(100, ErrorMessage = "El título de la tarea no puede tener mas de 100 caracteres")]
     public string Nombre { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
     [Display(Name = "Descripción")]
-    [StringLength(200, ErrorMessage = "La descripción del tablero no puede tener mas de 200 caracteres")]
+    [StringLength(200, ErrorMessage = "La descripción de la tarea no puede tener mas de 200 caracteres")]
     public string Descripcion { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
