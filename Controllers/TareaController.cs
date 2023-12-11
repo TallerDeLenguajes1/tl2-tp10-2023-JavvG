@@ -23,18 +23,25 @@ public class TareaController : Controller
 
     public IActionResult Index()
     {
-        if (!isAdmin()) return RedirectToRoute(new { controller = "Login", action = "Index" });
-        var tareas = tareaRepository.GetAll();
-        var tareasVM = new ListarTareasViewModel(tareas);
-        return View(tareasVM);
+        if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+        if(isAdmin())
+        {
+            var tareas = tareaRepository.GetAll();
+            var tareasVM = new ListarTareasViewModel(tareas);
+            return View(tareasVM);
+        }
+        else 
+        {
+            var tareas = tareaRepository.GetByUsuarioId(int.Parse(HttpContext.Session.GetString("id")));
+            return View(new ListarTareasViewModel(tareas));
+        } 
     }
 
     // Crear tarea
 
-    [HttpGet]
     public IActionResult Create() 
     {
-        if(!isAdmin()) return RedirectToAction("Index");
+        if(!isAdmin()) return RedirectOperatorUser();
         return View(new CrearTareaViewModel());
     }
 
@@ -42,7 +49,7 @@ public class TareaController : Controller
     public IActionResult Create(CrearTareaViewModel tareaVM)
     {
         if(!ModelState.IsValid) return RedirectToAction("Index");
-        if(!isAdmin()) return RedirectToAction("Index");
+        if(!isAdmin()) return RedirectOperatorUser();
 
         var tarea = new Tarea(tareaVM);
         tareaRepository.Create(1, tarea);
@@ -52,10 +59,9 @@ public class TareaController : Controller
 
     // Modificar tarea
 
-    [HttpGet]
     public IActionResult Update(int id)
     {
-        if(!isAdmin()) return RedirectToAction("Index");
+        if(!isAdmin()) return RedirectOperatorUser();
 
         var tarea = tareaRepository.GetById(id);
         var tareaVM = new ModificarTareaViewModel(tarea);
@@ -67,7 +73,7 @@ public class TareaController : Controller
     public IActionResult Update(int id, ModificarTareaViewModel tareaVM)
     {
         if(!ModelState.IsValid) return RedirectToAction("Index");
-        if(!isAdmin()) return RedirectToAction("Index");
+        if(!isAdmin()) return RedirectOperatorUser();
 
         var tarea = new Tarea(tareaVM);
         tareaRepository.Update(id, tarea);
@@ -77,7 +83,6 @@ public class TareaController : Controller
 
     // Eliminar tarea
 
-    [HttpGet]
     public IActionResult Delete(int id)
     {
         return View(tareaRepository.GetById(id));
@@ -86,7 +91,6 @@ public class TareaController : Controller
     [HttpPost]
     public IActionResult DeleteConfirmed(int id)
     {
-
         if(tareaRepository.Delete(id) > 0)
         {
             return RedirectToAction("Index");
@@ -97,12 +101,29 @@ public class TareaController : Controller
         }
     }
 
-    // Función que verifica que el usuario logueado sea 'administrador'
+    // Método que verifica que el usuario logueado sea 'administrador'
 
     private bool isAdmin()
     {
         return (HttpContext.Session != null && HttpContext.Session.GetString("rol") == "administrador");
     }
+
+    // Método que redirecciona a la pantalla de inicio mostrando un mensaje de error correspondiente
+
+    private IActionResult RedirectOperatorUser()
+    {
+        TempData["ErrorMessage"] = "No puedes acceder a este sitio porque no eres administrador";        // Almacena el mensaje en TempData (se utiliza para pasar datos entre acciones durante redirecciones) para mostrarlo en la página de inicio
+        return RedirectToRoute(new { controller = "Tablero", action = "Index" });
+    }
+
+    // Método que redirecciona a la pantalla de inicio de sesión
+
+    private IActionResult RedirectToLogin()
+    {
+        TempData["ErrorMessage"] = "Inicie sesión antes de acceder a este sitio";
+        return RedirectToRoute(new { controller = "Login", action = "Index" });
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
