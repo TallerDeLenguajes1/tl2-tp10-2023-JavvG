@@ -13,21 +13,24 @@ public class ModificarTareaViewModel
     public int IdTablero { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
-    [Display(Name = "Nuevo título")]
+    [Display(Name = "Título")]
+    [StringLength(100, ErrorMessage = "El nombre del tablero no puede tener mas de 100 caracteres")]
     public string Nombre { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
-    [Display(Name = "Nueva descripción")]
+    [Display(Name = "Descripción")]
+    [StringLength(200, ErrorMessage = "La descripción del tablero no puede tener mas de 200 caracteres")]
     public string Descripcion { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
-    [Display(Name = "Nuevo color")]
+    [Display(Name = "Color")]
+    [StringLength(20, ErrorMessage = "El nombre del color no puede tener mas de 20 caracteres")]
     public string Color { get; set; }
 
-    [Display(Name = "Nuevo estado")]
+    [Display(Name = "Estado")]
     public EstadoTarea Estado { get; set; }
 
-    [Display(Name = "Modificar el ID del usuario asignado")]
+    [Display(Name = "ID del usuario asignado")]
     public int? IdUsuarioAsignado { get; set; }
 
     public ModificarTareaViewModel() {}

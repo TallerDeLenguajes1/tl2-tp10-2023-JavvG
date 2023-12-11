@@ -14,14 +14,17 @@ public class CrearTareaViewModel
 
     [Required(ErrorMessage = "Este campo es requerido")]
     [Display(Name = "Título")]
+    [StringLength(100, ErrorMessage = "El nombre del tablero no puede tener mas de 100 caracteres")]
     public string Nombre { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
     [Display(Name = "Descripción")]
+    [StringLength(200, ErrorMessage = "La descripción del tablero no puede tener mas de 200 caracteres")]
     public string Descripcion { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
     [Display(Name = "Color")]
+    [StringLength(20, ErrorMessage = "El nombre del color no puede tener mas de 20 caracteres")]
     public string Color { get; set; }
 
     [Display(Name = "Estado")]
