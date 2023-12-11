@@ -6,6 +6,13 @@
 
 @model ListarTablerosViewModel
 
+@if(TempData.ContainsKey("ErrorMessage")) 
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <table class="table table-striped">
@@ -41,3 +48,5 @@
 <div class="d-grid gap-2 col-6 mx-auto">
     <a asp-controller="Tablero" asp-action="Create"><button class="btn btn-primary boton" type="button">Añadir un nuevo tablero </button></a>
 </div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
