@@ -4,6 +4,13 @@
 
 @model tl2_tp10_2023_JavvG.ViewModels.LoginViewModel;
 
+@if(TempData.ContainsKey("ErrorMessage")) 
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Login" asp-action="Login" method="post" autocomplete="off">
@@ -18,7 +25,7 @@
             <input asp-for="@Model.Password" class="form-control" />
             <span asp-validation-for="@Model.Password" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
     </form>
 </div>
 
