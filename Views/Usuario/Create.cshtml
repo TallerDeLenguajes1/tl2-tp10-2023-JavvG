@@ -26,3 +26,5 @@
         <a asp-controller="Usuario" asp-action="Index" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+
+@section Scripts {<partial name="_ValidationScriptsPartial"/>}       @* Se agrega el conjunto de librerías de JS que validan los datos con las reglas del servidor. Validaciones del lado del cliente (Front-End), se realiza en el navegador *@
