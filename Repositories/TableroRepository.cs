@@ -1,11 +1,11 @@
 using System.Data.SQLite;
 using tl2_tp10_2023_JavvG.Models;
+using tl2_tp10_2023_JavvG.Exceptions;
 
 namespace tl2_tp10_2023_JavvG.Repositories;
 
 public class TableroRepository : ITableroRepository
 {
-
     private readonly string _connectionString;
 
     public TableroRepository(string connectionString)
@@ -15,146 +15,157 @@ public class TableroRepository : ITableroRepository
 
     public Tablero Create(Tablero tablero)
     {
-        
-        var query = @"INSERT INTO Tablero (id_usuario_propietario, nombre, descripcion) VALUES (@id_usuario, @nombre_tablero, @descripcion_tablero);";
-
-        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+        try
         {
+            var query = @"INSERT INTO Tablero (id_usuario_propietario, nombre, descripcion) VALUES (@id_usuario, @nombre_tablero, @descripcion_tablero);";
 
-            connection.Open();
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
 
-            var command = new SQLiteCommand(query, connection);
+                var command = new SQLiteCommand(query, connection);
 
-            command.Parameters.Add(new SQLiteParameter("@id_usuario", tablero.IdUsuarioPropietario));
-            command.Parameters.Add(new SQLiteParameter("@nombre_tablero", tablero.Nombre));
-            command.Parameters.Add(new SQLiteParameter("@descripcion_tablero", tablero.Descripcion));
+                command.Parameters.Add(new SQLiteParameter("@id_usuario", tablero.IdUsuarioPropietario));
+                command.Parameters.Add(new SQLiteParameter("@nombre_tablero", tablero.Nombre));
+                command.Parameters.Add(new SQLiteParameter("@descripcion_tablero", tablero.Descripcion));
 
-            command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
 
-            connection.Close();
-
+                connection.Close();
+            }
+        }
+        catch(Exception ex)
+        {
+            throw new ElementNotCreatedException($"Error al crear el tablero (ID: {tablero.Id}) en la base de datos.", ex);
         }
 
         return tablero;
-
     }
 
     public List<Tablero> GetAll()
     {
-
         List<Tablero> tableros = new();
         
-        var query = @"SELECT * FROM Tablero;";
-
-        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+        try
         {
+            var query = @"SELECT * FROM Tablero;";
 
-            connection.Open();
-
-            var command = new SQLiteCommand(query, connection);
-
-            using (var reader = command.ExecuteReader())
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
             {
+                connection.Open();
 
-                while (reader.Read())
+                var command = new SQLiteCommand(query, connection);
+
+                using (var reader = command.ExecuteReader())
                 {
+                    while (reader.Read())
+                    {
+                        var tablero = new Tablero();
 
-                    var tablero = new Tablero();
+                        tablero.Id = Convert.ToInt32(reader["id"]);
+                        tablero.IdUsuarioPropietario = Convert.ToInt32(reader["id_usuario_propietario"]);
+                        tablero.Nombre = reader["nombre"].ToString();
+                        tablero.Descripcion = reader["descripcion"].ToString();
 
-                    tablero.Id = Convert.ToInt32(reader["id"]);
-                    tablero.IdUsuarioPropietario = Convert.ToInt32(reader["id_usuario_propietario"]);
-                    tablero.Nombre = reader["nombre"].ToString();
-                    tablero.Descripcion = reader["descripcion"].ToString();
-
-                    tableros.Add(tablero);
-
+                        tableros.Add(tablero);
+                    }
                 }
-
+                connection.Close();
             }
-
-            connection.Close();
-
+        }
+        catch(Exception ex)
+        {
+            throw new ElementNotFoundException("Error al obtener los tableros registrados en la base de datos.", ex);
         }
 
         return tableros;
-
     }
 
     public Tablero GetById(int id)
     {
-        
         List<Tablero> tableros = new();
+        Tablero tableroBuscado = new();
 
         tableros = GetAll();
+        tableroBuscado = tableros.FirstOrDefault(T => T.Id == id);
 
-        var tableroBuscado = tableros.FirstOrDefault(T => T.Id == id);
+        if(tableroBuscado.Nombre == null)
+        {
+            throw new Exception($"Error al encontrar el tablero (ID: {id}) en la base de datos.");
+        }
 
         return tableroBuscado;
-
     }
 
     public List<Tablero> GetByUserId(int idUsuario)
     {
-        
         List<Tablero> tableros = new();
 
         tableros = GetAll();
-
         List<Tablero> tablerosBuscados = tableros.FindAll(T => T.IdUsuarioPropietario == idUsuario);
 
-        return tablerosBuscados;
+        if(tableros.Count() == 0)
+        {
+            throw new Exception($"Error al encontrar los tableros asociados al usuario (ID: {idUsuario}) en la base de datos.");
+        }
 
+        return tablerosBuscados;
     }
 
     public int Delete(int id)
     {
-        
-        var query = @"DELETE FROM Tablero WHERE Tablero.id = (@id_buscado);";
-
         int result = 0;
-
-        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+        
+        try
         {
+            var query = @"DELETE FROM Tablero WHERE Tablero.id = (@id_buscado);";
 
-            connection.Open();
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
 
-            var command = new SQLiteCommand(query, connection);
+                var command = new SQLiteCommand(query, connection);
 
-            command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
+                command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
 
-            result = command.ExecuteNonQuery();
+                result = command.ExecuteNonQuery();
 
-            connection.Close();
-
+                connection.Close();
+            }
+        }
+        catch(Exception ex)
+        { 
+            throw new OperationFailedException($"Error al eliminar el tablero (ID: {id}) de la base de datos.", ex);
         }
 
         return result;
-
     }
 
     public void Update(int id, Tablero tablero)
     {
-        
-        var query = @"UPDATE Tablero SET id_usuario_propietario = @nuevo_id_usuario, nombre = @nuevo_nombre, descripcion = @nueva_descripcion WHERE id = @id_buscado;";
-
-        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+        try
         {
+            var query = @"UPDATE Tablero SET id_usuario_propietario = @nuevo_id_usuario, nombre = @nuevo_nombre, descripcion = @nueva_descripcion WHERE id = @id_buscado;";
 
-            connection.Open();
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
 
-            var command = new SQLiteCommand(query, connection);
+                var command = new SQLiteCommand(query, connection);
 
-            command.Parameters.Add(new SQLiteParameter("@nuevo_id_usuario", tablero.IdUsuarioPropietario));
-            command.Parameters.Add(new SQLiteParameter("@nuevo_nombre", tablero.Nombre));
-            command.Parameters.Add(new SQLiteParameter("@nueva_descripcion", tablero.Descripcion));
-            command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
+                command.Parameters.Add(new SQLiteParameter("@nuevo_id_usuario", tablero.IdUsuarioPropietario));
+                command.Parameters.Add(new SQLiteParameter("@nuevo_nombre", tablero.Nombre));
+                command.Parameters.Add(new SQLiteParameter("@nueva_descripcion", tablero.Descripcion));
+                command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
 
-            command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
 
-            connection.Close();
-
+                connection.Close();
+            }
         }
-
+        catch(Exception ex)
+        {  
+            throw new ElementNotCreatedException($"Error al actualizar el tablero (ID: {id}) en la base de datos.", ex);
+        }
     }
-    
 }
