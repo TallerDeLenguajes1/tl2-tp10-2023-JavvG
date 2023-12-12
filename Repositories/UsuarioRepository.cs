@@ -7,14 +7,18 @@ namespace tl2_tp10_2023_JavvG.Repositories;
 public class UsuarioRepository : IUsuarioRepository 
 {
 
-    private readonly string connectionString = "Data Source=DB/kanban.db;Cache=Shared";
+    private readonly string _connectionString;
+
+    public UsuarioRepository(string connectionString) 
+    {
+        _connectionString = connectionString;
+    }
 
     public void Create(Usuario usuario) 
     {
-
         var query = @"INSERT INTO Usuario (nombre_de_usuario, password, rol) VALUES (@nombre_de_usuario, @password, @rol);";      // Consulta SQL
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
             
             connection.Open();      // Inicio de conexión con la BD
@@ -30,15 +34,13 @@ public class UsuarioRepository : IUsuarioRepository
             connection.Close();     // Fin de conexión con la BD
 
         }
-
     }
 
     public void Update(int id, Usuario usuario) 
     {
-
         var query = @"UPDATE Usuario SET nombre_de_usuario = @nuevo_nombre, password = @password, rol = @rol WHERE id = @id_buscado;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -55,17 +57,15 @@ public class UsuarioRepository : IUsuarioRepository
             connection.Close();
 
         }
-
     }
 
     public List<Usuario> GetAll() 
     {
-
         List<Usuario> usuarios = new();
         
         var query = @"SELECT * FROM Usuario;";
         
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -101,12 +101,10 @@ public class UsuarioRepository : IUsuarioRepository
         }
 
         return usuarios;
-
     }
 
     public Usuario GetById(int id) 
     {
-
         List<Usuario> usuarios = new();
         
         usuarios = GetAll();
@@ -114,17 +112,15 @@ public class UsuarioRepository : IUsuarioRepository
         var usuarioBuscado = usuarios.FirstOrDefault(U => U.Id == id);
 
         return usuarioBuscado;
-        
     }
 
     public int Delete(int id) 
     {
-
         var query = @"DELETE FROM Usuario WHERE Usuario.id = (@id_buscado);";
 
         int result = 0;
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -140,17 +136,15 @@ public class UsuarioRepository : IUsuarioRepository
         }
 
         return result;
-
     }
 
     public Usuario GetLoggedUser(string nombre, string password) 
     {
-    
         var usuarioBuscado = new Usuario();
 
         var query = @"SELECT * FROM Usuario WHERE (nombre_de_usuario = @nombreUsuario AND password = @password);";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
         {
             connection.Open();
 
@@ -179,7 +173,5 @@ public class UsuarioRepository : IUsuarioRepository
             connection.Close();
         }
         return usuarioBuscado;
-
     }
-    
 }
