@@ -11,10 +11,10 @@ public class UsuarioController : Controller
     private readonly ILogger<UsuarioController> _logger;
     private readonly IUsuarioRepository usuarioRepository;
 
-    public UsuarioController(ILogger<UsuarioController> logger)
+    public UsuarioController(ILogger<UsuarioController> logger, IUsuarioRepository _usuarioRepository)
     {
         _logger = logger;
-        usuarioRepository = new UsuarioRepository();
+        usuarioRepository = _usuarioRepository;
     }
 
     // Endpoints
