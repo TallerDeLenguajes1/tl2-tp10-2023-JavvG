@@ -1,3 +1,5 @@
+using tl2_tp10_2023_JavvG.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -10,6 +12,11 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+// Inyección de dependencias Scope
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ITareaRepository, TareaRepository>();
+builder.Services.AddScoped<ITableroRepository, TableroRepository>();
 
 // Se registra el servicio necesario para IHttpContextAccessor (usado en Tablero/Create.cshtml)
 builder.Services.AddHttpContextAccessor();
