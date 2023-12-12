@@ -23,16 +23,24 @@ public class TareaController : Controller
 
     public IActionResult Index()
     {
-        if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
-        if(isAdmin())
+        try
         {
-            var tareas = tareaRepository.GetAll();
-            return View(new ListarTareasViewModel(tareas));
+            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+            if(isAdmin())
+            {
+                var tareas = tareaRepository.GetAll();
+                return View(new ListarTareasViewModel(tareas));
+            }
+            else 
+            {
+                var tareas = tareaRepository.GetByUsuarioId(int.Parse(HttpContext.Session.GetString("id")));
+                return View(new ListarTareasViewModel(tareas));
+            }
         }
-        else 
+        catch(Exception ex)
         {
-            var tareas = tareaRepository.GetByUsuarioId(int.Parse(HttpContext.Session.GetString("id")));
-            return View(new ListarTareasViewModel(tareas));
+            _logger.LogError(ex.ToString());
+            return BadRequest();
         } 
     }
 
@@ -40,63 +48,111 @@ public class TareaController : Controller
 
     public IActionResult Create() 
     {
-        if(!isAdmin()) return RedirectOperatorUser();
-        return View(new CrearTareaViewModel());
+        try
+        {
+            if(!isAdmin()) return RedirectOperatorUser();
+            return View(new CrearTareaViewModel());
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return BadRequest();
+        }
     }
 
     [HttpPost]
     public IActionResult Create(CrearTareaViewModel tareaVM)
     {
-        if(!ModelState.IsValid) return RedirectToAction("Index");
-        if(!isAdmin()) return RedirectOperatorUser();
+        try
+        {
+            if(!ModelState.IsValid) return RedirectToAction("Index");
+            if(!isAdmin()) return RedirectOperatorUser();
 
-        var tarea = new Tarea(tareaVM);
-        tareaRepository.Create(1, tarea);
+            var tarea = new Tarea(tareaVM);
+            tareaRepository.Create(1, tarea);
 
-        return RedirectToAction("Index");
+            return RedirectToAction("Index");
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return BadRequest();
+        }
     }
 
     // Modificar tarea
 
     public IActionResult Update(int id)
     {
-        if(!isAdmin()) return RedirectOperatorUser();
+        try
+        {
+            if(!isAdmin()) return RedirectOperatorUser();
 
-        var tarea = tareaRepository.GetById(id);
-        var tareaVM = new ModificarTareaViewModel(tarea);
+            var tarea = tareaRepository.GetById(id);
+            var tareaVM = new ModificarTareaViewModel(tarea);
 
-        return View(tareaVM);
+            return View(tareaVM);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return BadRequest();
+        }
     }
 
     [HttpPost]
     public IActionResult Update(int id, ModificarTareaViewModel tareaVM)
     {
-        if(!ModelState.IsValid) return RedirectToAction("Index");
-        if(!isAdmin()) return RedirectOperatorUser();
+        try
+        {
+            if(!ModelState.IsValid) return RedirectToAction("Index");
+            if(!isAdmin()) return RedirectOperatorUser();
 
-        var tarea = new Tarea(tareaVM);
-        tareaRepository.Update(id, tarea);
+            var tarea = new Tarea(tareaVM);
+            tareaRepository.Update(id, tarea);
 
-        return RedirectToAction("Index");
+            return RedirectToAction("Index");
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return BadRequest();
+        }
     }
 
     // Eliminar tarea
 
     public IActionResult Delete(int id)
     {
-        return View(tareaRepository.GetById(id));
+        try
+        {
+            return View(tareaRepository.GetById(id));
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return BadRequest();
+        }
     }
 
     [HttpPost]
     public IActionResult DeleteConfirmed(int id)
     {
-        if(tareaRepository.Delete(id) > 0)
+        try
         {
-            return RedirectToAction("Index");
+            if(tareaRepository.Delete(id) > 0)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
         }
-        else
+        catch(Exception ex)
         {
-            return RedirectToAction("Error");
+            _logger.LogError(ex.ToString());
+            return BadRequest();
         }
     }
 
