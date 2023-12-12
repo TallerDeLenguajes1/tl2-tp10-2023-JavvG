@@ -13,7 +13,12 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Inyección de dependencias Scope
+// Se obtiene la cadena de conexión desde el archivo de configuración (JSON), y se la registra con un servicio Sigleton (dura el tiempo de vida de la aplicación, una única instancia que será usada por todas las clases que lo necesiten)
+var connectionString =
+builder.Configuration.GetConnectionString("SqliteConexion")!.ToString();
+builder.Services.AddSingleton<string>(connectionString);
+
+// Inyección de dependencias Scope (repositorios)
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();
 builder.Services.AddScoped<ITableroRepository, TableroRepository>();
