@@ -6,14 +6,19 @@ namespace tl2_tp10_2023_JavvG.Repositories;
 public class TareaRepository : ITareaRepository 
 {
 
-    private readonly string connectionString = "Data Source=DB/kanban.db;Cache=Shared";
+    private readonly string _connectionString;
+
+    public TareaRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
 
     public void Assign(int idUsuario, int idTarea) 
     {
         
         var query = @"UPDATE Tarea SET id_usuario_asignado = @id_usuario WHERE id = @id_tarea;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -36,7 +41,7 @@ public class TareaRepository : ITareaRepository
 
         var query = @"INSERT INTO tarea (id_tablero, nombre, estado, descripcion, color, id_usuario_asignado) VALUES (@id_tablero, @nombre, @estado, @descripcion, @color, @id_usuario_asignado);";
 
-        using (var connection = new SQLiteConnection(connectionString)) 
+        using (var connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -77,7 +82,7 @@ public class TareaRepository : ITareaRepository
 
         var query = @"SELECT * FROM Tarea;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -136,7 +141,7 @@ public class TareaRepository : ITareaRepository
 
         var query = @"SELECT * FROM Tarea WHERE id_tablero = @id_tablero;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -199,7 +204,7 @@ public class TareaRepository : ITareaRepository
 
         var query = @"SELECT * FROM Tarea WHERE id = @id_tarea;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -258,7 +263,7 @@ public class TareaRepository : ITareaRepository
 
         var query = @"SELECT * FROM Tarea  WHERE id_usuario_asignado = @id_usuario AND id_usuario_asignado IS NOT NULL;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -311,7 +316,7 @@ public class TareaRepository : ITareaRepository
 
         int result = 0;
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();
@@ -335,7 +340,7 @@ public class TareaRepository : ITareaRepository
         
         var query = @"UPDATE Tarea SET id_tablero = @nuevo_id_talero, nombre = @nuevo_nombre, estado = @nuevo_estado, descripcion = @nueva_descripcion, color = @nuevo_color, id_usuario_asignado = @nuevo_id_usuario WHERE id = @id_buscado;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString)) 
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
         {
 
             connection.Open();

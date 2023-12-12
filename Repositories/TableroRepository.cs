@@ -6,14 +6,19 @@ namespace tl2_tp10_2023_JavvG.Repositories;
 public class TableroRepository : ITableroRepository
 {
 
-    private readonly string connectionString = "Data Source=DB/kanban.db;Cache=Shared";
+    private readonly string _connectionString;
+
+    public TableroRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
 
     public Tablero Create(Tablero tablero)
     {
         
         var query = @"INSERT INTO Tablero (id_usuario_propietario, nombre, descripcion) VALUES (@id_usuario, @nombre_tablero, @descripcion_tablero);";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
         {
 
             connection.Open();
@@ -41,7 +46,7 @@ public class TableroRepository : ITableroRepository
         
         var query = @"SELECT * FROM Tablero;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
         {
 
             connection.Open();
@@ -108,7 +113,7 @@ public class TableroRepository : ITableroRepository
 
         int result = 0;
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
         {
 
             connection.Open();
@@ -132,7 +137,7 @@ public class TableroRepository : ITableroRepository
         
         var query = @"UPDATE Tablero SET id_usuario_propietario = @nuevo_id_usuario, nombre = @nuevo_nombre, descripcion = @nueva_descripcion WHERE id = @id_buscado;";
 
-        using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+        using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
         {
 
             connection.Open();
