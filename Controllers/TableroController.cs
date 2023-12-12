@@ -11,10 +11,10 @@ public class TableroController : Controller
     private readonly ILogger<TableroController> _logger;
     private readonly ITableroRepository tableroRepository;
 
-    public TableroController(ILogger<TableroController> logger)
+    public TableroController(ILogger<TableroController> logger, ITableroRepository _tableroRepository)
     {
         _logger = logger;
-        tableroRepository = new TableroRepository();
+        tableroRepository = _tableroRepository;
     }
 
     // Endpoints
