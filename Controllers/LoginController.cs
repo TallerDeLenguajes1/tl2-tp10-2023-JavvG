@@ -12,10 +12,10 @@ public class LoginController : Controller
     private readonly ILogger<LoginController> _logger;
     private readonly IUsuarioRepository usuarioRepository;
 
-    public LoginController(ILogger<LoginController> logger)
+    public LoginController(ILogger<LoginController> logger, IUsuarioRepository _usuarioRepository)
     {
         _logger = logger;
-        usuarioRepository = new UsuarioRepository();
+        usuarioRepository = _usuarioRepository;
     }
 
     // Endpoints
@@ -25,30 +25,52 @@ public class LoginController : Controller
         return View();
     }
 
-    [HttpPost]
+    // Endpoint de control de inicio de sesión
+
+    [HttpPost]     
     public IActionResult Login(LoginViewModel usuario)
     {
-
-        var usuarioLogueado = usuarioRepository.GetLoggedUser(usuario.NombreUsuario, usuario.Password);
-
-        if(usuarioLogueado.Nombre == null) 
+        try 
         {
-            return RedirectToAction("Index");       // Si el usuario no existe, retorna a 'Index'
-        }
-        else 
-        {
-            LoguearUsuario(usuarioLogueado);        // Registrar el usuario
+            var usuarioLogueado = usuarioRepository.GetLoggedUser(usuario.NombreUsuario, usuario.Password);
 
-            if (HttpContext.Session.GetString("rol") == Rol.administrador.ToString())
+            if(usuarioLogueado.Nombre == null) 
             {
-                return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+                // Acceso rechazado
+                _logger.LogWarning($"Intento de acceso inválido - Usuario: {usuario.NombreUsuario} - Clave ingresada: {usuario.Password}");
+
+                return RedirectToAction("Index");       // Si el usuario no existe, retorna a 'Index'
             }
-            else
+            else 
             {
-                return RedirectToRoute(new { controller = "Tablero", action = "Index" });
+                // Acceso exitoso
+                _logger.LogInformation($"El usuario {usuario.NombreUsuario} ingresó correctamente.");
+
+                LoguearUsuario(usuarioLogueado);        // Registrar el usuario
+
+                if (HttpContext.Session.GetString("rol") == Rol.administrador.ToString())
+                {
+                    return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+                }
+                else
+                {
+                    return RedirectToRoute(new { controller = "Tablero", action = "Index" });
+                }
             }
         }
-        
+        catch (Exception ex)
+        {
+            // Loggeo de errores
+            _logger.LogError($"Error durante el inicio de sesión: {ex.ToString()}");
+            return BadRequest();
+
+            /* var message = "Error message: " + ex.Message;       // Qué ha sucedido
+            if (ex.InnerException != null)      // Información sobre la excepción
+            {
+                message = message + " Inner exception: " + ex.InnerException.Message;
+            }
+            message = message + " Stack trace: " + ex.StackTrace;       // Dónde ha sucedido */
+        }
     }
 
     private void LoguearUsuario(Usuario usuario)
