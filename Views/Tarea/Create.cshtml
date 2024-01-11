@@ -17,7 +17,7 @@
             <label for="descripcion" class="form-label">Descripción</label>
             <input asp-for="@Model.Descripcion" type="text" class="form-control" id="descripcion" required>
             <label for="color" class="form-label">Color</label>
-            <input asp-for="@Model.Color" type="text" class="form-control" id="color" required>
+            <input asp-for="@Model.Color" type="color" class="form-control" id="color" required>
 
             <label for="usuarioAsignado" class="form-label">Seleccione el usuario al que desea asignar la tarea</label>
             <select asp-for="@Model.IdUsuarioAsignado" class="form-control" id="usuarioAsignado" required>
