@@ -1,3 +1,4 @@
+@using tl2_tp10_2023_JavvG.Models
 @using tl2_tp10_2023_JavvG.ViewModels
 
 @{
@@ -17,8 +18,15 @@
             <input asp-for="@Model.Descripcion" type="text" class="form-control" id="descripcion" required>
             <label for="color" class="form-label">Color</label>
             <input asp-for="@Model.Color" type="text" class="form-control" id="color" required>
-            <label for="usuarioAsignado" class="form-label">Indique el ID del usuario asignado para esta tarea</label>
-            <input asp-for="@Model.IdUsuarioAsignado" type="text" class="form-control" id="usuarioAsignado" required>
+
+            <label for="usuarioAsignado" class="form-label">Seleccione el usuario al que desea asignar la tarea</label>
+            <select asp-for="@Model.IdUsuarioAsignado" class="form-control" id="usuarioAsignado" required>
+                @foreach (var user in @Model.usuariosRegistrados)
+                {
+                    <option value="@user.Id">@user.Nombre</option>
+                }
+            </select>
+
             <input hidden asp-for="@Model.Estado" value=1>
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
