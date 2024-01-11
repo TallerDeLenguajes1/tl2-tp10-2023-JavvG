@@ -54,9 +54,7 @@ public class TareaController : Controller
         try
         {
             if(!isAdmin()) return RedirectOperatorUser();
-
             List<Usuario> usuarios = usuarioRepository.GetAll();
-
             return View(new CrearTareaViewModel(usuarios));
         }
         catch(Exception ex)
@@ -93,9 +91,9 @@ public class TareaController : Controller
         try
         {
             if(!isAdmin()) return RedirectOperatorUser();
-
+            List<Usuario> usuarios = usuarioRepository.GetAll();
             var tarea = tareaRepository.GetById(id);
-            var tareaVM = new ModificarTareaViewModel(tarea);
+            var tareaVM = new ModificarTareaViewModel(tarea, usuarios);
 
             return View(tareaVM);
         }
