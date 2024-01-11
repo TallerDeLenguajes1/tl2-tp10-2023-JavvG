@@ -10,12 +10,15 @@ public class TareaController : Controller
 {
     private readonly ILogger<TareaController> _logger;
     private readonly ITareaRepository tareaRepository;
+    private readonly IUsuarioRepository usuarioRepository;
 
-    public TareaController(ILogger<TareaController> logger, ITareaRepository _tareaRepository)
+    public TareaController(ILogger<TareaController> logger, ITareaRepository _tareaRepository, IUsuarioRepository _usuarioRepository)
     {
         _logger = logger;
         tareaRepository = _tareaRepository;
+        usuarioRepository = _usuarioRepository;
     }
+
 
     // Endpoints
 
@@ -51,7 +54,10 @@ public class TareaController : Controller
         try
         {
             if(!isAdmin()) return RedirectOperatorUser();
-            return View(new CrearTareaViewModel());
+
+            List<Usuario> usuarios = usuarioRepository.GetAll();
+
+            return View(new CrearTareaViewModel(usuarios));
         }
         catch(Exception ex)
         {
