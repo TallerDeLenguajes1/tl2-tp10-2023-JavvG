@@ -32,19 +32,19 @@ public class LoginController : Controller
     {
         try 
         {
-            var usuarioLogueado = usuarioRepository.GetLoggedUser(usuario.NombreUsuario, usuario.Password);
+            var usuarioLogueado = usuarioRepository.GetLoggedUser(usuario.NombreUsuario.Trim(), usuario.Password);
 
             if(usuarioLogueado.Nombre == null) 
             {
                 // Acceso rechazado
-                _logger.LogWarning($"Intento de acceso inválido - Usuario: {usuario.NombreUsuario} - Clave ingresada: {usuario.Password}");
+                _logger.LogWarning($"Intento de acceso inválido - Usuario: {usuario.NombreUsuario.Trim()} - Clave ingresada: {usuario.Password}");
 
                 return RedirectToAction("Index");       // Si el usuario no existe, retorna a 'Index'
             }
             else 
             {
                 // Acceso exitoso
-                _logger.LogInformation($"El usuario {usuario.NombreUsuario} ingresó correctamente.");
+                _logger.LogInformation($"El usuario {usuario.NombreUsuario.Trim()} ingresó correctamente.");
 
                 LoguearUsuario(usuarioLogueado);        // Registrar el usuario
 
