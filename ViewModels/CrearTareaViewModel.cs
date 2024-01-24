@@ -33,13 +33,15 @@ public class CrearTareaViewModel
     [Display(Name = "ID del usuario asignado")]
     public int? IdUsuarioAsignado { get; set; }
 
-    public List<Usuario> usuariosRegistrados { get; set; }
+    public List<Usuario> UsuariosRegistrados { get; set; }
+    public List<Tablero> TablerosRegistrados { get; set; }
 
     public CrearTareaViewModel() {}
 
-    public CrearTareaViewModel(List<Usuario> usuarios) 
+    public CrearTareaViewModel(List<Usuario> usuarios, List<Tablero> tableros) 
     {
-        usuariosRegistrados = usuarios;
+        UsuariosRegistrados = usuarios;
+        TablerosRegistrados = tableros;
     }
 
     public CrearTareaViewModel(Tarea tarea)
