@@ -100,14 +100,24 @@ public class TareaController : Controller
 
     // Modificar tarea
 
-    public IActionResult Update(int id)
+    public IActionResult Update(int idTarea, int idUsuario)
     {
         try
         {
-            if(!isAdmin()) return RedirectOperatorUser();
             List<Usuario> usuarios = usuarioRepository.GetAll();
-            var tarea = tareaRepository.GetById(id);
-            var tareaVM = new ModificarTareaViewModel(tarea, usuarios);
+            List<Tablero> tableros = new();
+
+            if(isAdmin())
+            {
+                tableros = tableroRepository.GetAll();
+            }
+            else 
+            {
+                tableros = tableroRepository.GetByUserId(idUsuario);
+            }
+
+            var tarea = tareaRepository.GetById(idTarea);
+            var tareaVM = new ModificarTareaViewModel(tarea, usuarios, tableros);
 
             return View(tareaVM);
         }
@@ -119,15 +129,14 @@ public class TareaController : Controller
     }
 
     [HttpPost]
-    public IActionResult Update(int id, ModificarTareaViewModel tareaVM)
+    public IActionResult Update(ModificarTareaViewModel tareaVM)
     {
         try
         {
             if(!ModelState.IsValid) return RedirectToAction("Index");
-            if(!isAdmin()) return RedirectOperatorUser();
 
             var tarea = new Tarea(tareaVM);
-            tareaRepository.Update(id, tarea);
+            tareaRepository.Update(tarea.Id, tarea);
 
             return RedirectToAction("Index");
         }
@@ -140,11 +149,11 @@ public class TareaController : Controller
 
     // Eliminar tarea
 
-    public IActionResult Delete(int id)
+    public IActionResult Delete(int idTarea)
     {
         try
         {
-            return View(tareaRepository.GetById(id));
+            return View(tareaRepository.GetById(idTarea));
         }
         catch(Exception ex)
         {
@@ -154,11 +163,11 @@ public class TareaController : Controller
     }
 
     [HttpPost]
-    public IActionResult DeleteConfirmed(int id)
+    public IActionResult DeleteConfirmed(int idTarea)
     {
         try
         {
-            if(tareaRepository.Delete(id) > 0)
+            if(tareaRepository.Delete(idTarea) > 0)
             {
                 return RedirectToAction("Index");
             }
