@@ -10,12 +10,12 @@
     <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Tarea" asp-action="Update" method="post" autocomplete="off">
         <div class="mb-3">
-            <input hidden asp-for="@Model.Id">
-            <input hidden asp-for="@Model.IdTablero" value=@Model.IdTablero>
+            <input hidden asp-for="@Model.Id" value="@Model.Id">
             <label for="nombre" class="form-label">Nuevo título</label>
             <input asp-for="@Model.Nombre" value="@Model.Nombre" type="text" class="form-control" id="nombre">
             <label for="descripcion" class="form-label">Nueva descripción</label>
             <input asp-for="@Model.Descripcion" value="@Model.Descripcion" type="text" class="form-control" id="descripcion">
+
             <label for="estado" class="form-label">Seleccione el estado</label>
             <select asp-for="@Model.Estado" class="form-control" id="estado" required>
                 @foreach (var estado in Enum.GetValues(typeof(EstadoTarea)))
@@ -29,9 +29,17 @@
 
             <label for="usuarioAsignado" class="form-label">Seleccione el usuario al que desea asignar la tarea</label>
             <select asp-for="@Model.IdUsuarioAsignado" class="form-control" id="usuarioAsignado" required>
-                @foreach (var user in @Model.usuariosRegistrados)
+                @foreach (var user in @Model.UsuariosRegistrados)
                 {
                     <option value="@user.Id">@user.Nombre</option>
+                }
+            </select>
+
+            <label for="tableroSeleccionado" class="form-label">Seleccione el tablero al que desea añadir la tarea</label>
+            <select asp-for="@Model.IdTablero" class="form-control" id="tableroSeleccionado" required>
+                @foreach (var board in @Model.TablerosRegistrados)
+                {
+                    <option value="@board.Id">@board.Nombre</option>
                 }
             </select>
             
