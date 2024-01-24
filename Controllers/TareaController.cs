@@ -11,12 +11,14 @@ public class TareaController : Controller
     private readonly ILogger<TareaController> _logger;
     private readonly ITareaRepository tareaRepository;
     private readonly IUsuarioRepository usuarioRepository;
+    private readonly ITableroRepository tableroRepository;
 
-    public TareaController(ILogger<TareaController> logger, ITareaRepository _tareaRepository, IUsuarioRepository _usuarioRepository)
+    public TareaController(ILogger<TareaController> logger, ITareaRepository _tareaRepository, IUsuarioRepository _usuarioRepository, ITableroRepository _tableroRepository)
     {
         _logger = logger;
         tareaRepository = _tareaRepository;
         usuarioRepository = _usuarioRepository;
+        tableroRepository = _tableroRepository;
     }
 
 
@@ -29,15 +31,18 @@ public class TareaController : Controller
         try
         {
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+            
+            int idUsuario = int.Parse(HttpContext.Session.GetString("id"));
+            
             if(isAdmin())
             {
                 var tareas = tareaRepository.GetAll();
-                return View(new ListarTareasViewModel(tareas));
+                return View(new ListarTareasViewModel(tareas, idUsuario));
             }
             else 
             {
-                var tareas = tareaRepository.GetByUsuarioId(int.Parse(HttpContext.Session.GetString("id")));
-                return View(new ListarTareasViewModel(tareas));
+                var tareas = tareaRepository.GetByUsuarioId(idUsuario);
+                return View(new ListarTareasViewModel(tareas, idUsuario));
             }
         }
         catch(Exception ex)
@@ -49,13 +54,23 @@ public class TareaController : Controller
 
     // Crear tarea
 
-    public IActionResult Create() 
+    public IActionResult Create(int idUsuario) 
     {
         try
         {
-            if(!isAdmin()) return RedirectOperatorUser();
             List<Usuario> usuarios = usuarioRepository.GetAll();
-            return View(new CrearTareaViewModel(usuarios));
+            List<Tablero> tableros = new();
+
+            if(isAdmin()) 
+            {
+                tableros = tableroRepository.GetAll();
+            }
+            else 
+            {
+                tableros = tableroRepository.GetByUserId(idUsuario);
+            }
+
+            return View(new CrearTareaViewModel(usuarios, tableros));
         }
         catch(Exception ex)
         {
@@ -70,10 +85,9 @@ public class TareaController : Controller
         try
         {
             if(!ModelState.IsValid) return RedirectToAction("Index");
-            if(!isAdmin()) return RedirectOperatorUser();
 
             var tarea = new Tarea(tareaVM);
-            tareaRepository.Create(1, tarea);
+            tareaRepository.Create(tarea.IdTablero, tarea);
 
             return RedirectToAction("Index");
         }
