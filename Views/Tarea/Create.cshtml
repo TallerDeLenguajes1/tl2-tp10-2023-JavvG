@@ -11,7 +11,6 @@
     <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Tarea" asp-action="Create" method="post" autocomplete="off">
         <div class="mb-3">
-            <input hidden asp-for = "@Model.IdTablero" value=1>
             <label for="nombre" class="form-label">Título</label>
             <input asp-for="@Model.Nombre" type="text" class="form-control" id="nombre" required>
             <label for="descripcion" class="form-label">Descripción</label>
@@ -21,13 +20,21 @@
 
             <label for="usuarioAsignado" class="form-label">Seleccione el usuario al que desea asignar la tarea</label>
             <select asp-for="@Model.IdUsuarioAsignado" class="form-control" id="usuarioAsignado" required>
-                @foreach (var user in @Model.usuariosRegistrados)
+                @foreach (var user in @Model.UsuariosRegistrados)
                 {
                     <option value="@user.Id">@user.Nombre</option>
                 }
             </select>
 
-            <input hidden asp-for="@Model.Estado" value=1>
+            <label for="tableroSeleccionado" class="form-label">Seleccione el tablero al que desea añadir la tarea</label>
+            <select asp-for="@Model.IdTablero" class="form-control" id="tableroSeleccionado" required>
+                @foreach (var board in @Model.TablerosRegistrados)
+                {
+                    <option value="@board.Id">@board.Nombre</option>
+                }
+            </select>
+
+            <input hidden asp-for="@Model.Estado" value=0>
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
         <a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary">Cancelar</a>
