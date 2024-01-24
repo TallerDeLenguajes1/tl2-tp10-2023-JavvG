@@ -42,10 +42,10 @@
                     }
                     
                     <td>
-                        <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-id="@T.Id">Modificar</a>
+                        <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Modificar</a>
                     </td>
                     <td>
-                        <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
+                        <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar</a>
                     </td>
                 </tr>
             }
