@@ -6,16 +6,23 @@ namespace tl2_tp10_2023_JavvG.ViewModels;
 
 public class ListarTareasViewModel 
 {
-    [Display(Name = "Tareas")]
     public List<Tarea> Tareas { get; set; }
+
+    public List<Tarea> TareasCreadas { get; set; }
 
     public int IdUsuario { get; set; }
 
-    public ListarTareasViewModel() {}
+    public ListarTareasViewModel() 
+    {
+        Tareas = new();
+        TareasCreadas = new();
+    }
 
-    public ListarTareasViewModel(List<Tarea> tareas) 
+    public ListarTareasViewModel(List<Tarea> tareas, List<Tarea> tareasCreadas, int idUsuario) 
     {
         Tareas = tareas;
+        TareasCreadas = tareasCreadas;
+        IdUsuario = idUsuario;
     }
 
     public ListarTareasViewModel(List<Tarea> tareas, int idUsuario)
