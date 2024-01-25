@@ -18,13 +18,17 @@
             <input hidden asp-for="@Model.Id">
             @if(session.GetString("rol") == "administrador")
             {
-                <label for="idUsuarioPropietario" class="form-label">Indique el ID del nuevo usuario propietario</label>
-                <input asp-for="@Model.IdUsuarioPropietario" type="text" class="form-control" id="idUsuarioPropietario" required>
+                <label for="idUsuarioPropietario" class="form-label">Seleccione el usuario que será propietario de este tablero:</label>
+                <select asp-for="@Model.IdUsuarioPropietario" class="form-control" id="idUsuarioPropietario" required>
+                    @foreach (var user in @Model.UsuariosRegistrados)
+                    {
+                        <option value="@user.Id">@user.Nombre</option>
+                    }
+                </select>
             }
             else
             {
-                int idUsuario = int.Parse(session.GetString("id"));
-                <input hidden asp-for="@Model.IdUsuarioPropietario" value=@idUsuario>
+                <input hidden asp-for="@Model.IdUsuarioPropietario" value=@Model.IdUsuarioPropietario>
             }
             <label for="nombre" class="form-label">Nuevo nombre</label>
             <input asp-for="@Model.Nombre" value="@Model.Nombre" type="text" class="form-control" id="nombre">
