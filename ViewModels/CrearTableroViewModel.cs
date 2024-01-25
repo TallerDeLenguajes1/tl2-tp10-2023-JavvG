@@ -22,7 +22,15 @@ public class CrearTableroViewModel
     [Display(Name = "Descripción")]
     public string Descripcion { get; set; }
 
+    public List<Usuario> UsuariosRegistrados { get; set; }
+
     public CrearTableroViewModel() {}
+
+    public CrearTableroViewModel(int idUsuario, List<Usuario> usuarios)
+    {
+        IdUsuarioPropietario = idUsuario;
+        UsuariosRegistrados = usuarios;
+    }
 
     public CrearTableroViewModel(Tablero tablero)
     {

@@ -21,13 +21,17 @@ public class ModificarTableroViewModel
     [Display(Name = "Descripción")]
     public string Descripcion { get; set; }
 
+    public List<Usuario> UsuariosRegistrados { get; set; }
+
     public ModificarTableroViewModel() {}
 
-    public ModificarTableroViewModel(Tablero tablero)
+    public ModificarTableroViewModel(Tablero tablero, int idUsuario, List<Usuario> usuarios)
     {
         Id = tablero.Id;
         IdUsuarioPropietario = tablero.IdUsuarioPropietario;
         Nombre = tablero.Nombre;
         Descripcion = tablero.Descripcion;
+        IdUsuarioPropietario = idUsuario;
+        UsuariosRegistrados = usuarios;
     }
 }
