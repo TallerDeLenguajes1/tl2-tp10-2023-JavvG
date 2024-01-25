@@ -34,7 +34,7 @@
                     <td>@T.Nombre</td>
                     <td>@T.Descripcion</td>
                     <td>
-                        <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-id="@T.Id">Modificar</a>
+                        <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Modificar</a>
                     </td>
                     <td>
                         <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
@@ -46,7 +46,7 @@
 </div>
 
 <div class="d-grid gap-2 col-6 mx-auto">
-    <a asp-controller="Tablero" asp-action="Create"><button class="btn btn-primary boton" type="button">Añadir un nuevo tablero </button></a>
+    <a asp-controller="Tablero" asp-action="Create" asp-route-idUsuario="@Model.IdUsuario"><button class="btn btn-primary boton" type="button">Añadir un nuevo tablero </button></a>
 </div>
 
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }
