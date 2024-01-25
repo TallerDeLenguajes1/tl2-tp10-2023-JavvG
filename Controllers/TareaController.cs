@@ -33,16 +33,37 @@ public class TareaController : Controller
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
             
             int idUsuario = int.Parse(HttpContext.Session.GetString("id"));
-            
+
+            List<Tarea> tareas = new();
+            List<Tarea> tareasAsignadas = new();
+            List<Tarea> tareasCreadas = new();
+            List<Tablero> tableros = new();
+
             if(isAdmin())
             {
-                var tareas = tareaRepository.GetAll();
+                tareas = tareaRepository.GetAll();
                 return View(new ListarTareasViewModel(tareas, idUsuario));
             }
-            else 
+            else
             {
-                var tareas = tareaRepository.GetByUsuarioId(idUsuario);
-                return View(new ListarTareasViewModel(tareas, idUsuario));
+                tareas = tareaRepository.GetAll();
+                tareasAsignadas = tareaRepository.GetByUsuarioId(idUsuario);
+                tableros = tableroRepository.GetByUserId(idUsuario);
+
+                /* foreach (Tarea task in tareas)
+                {
+                    int idTablero = task.IdTablero;
+                    foreach (Tablero board in tableros)
+                    {
+                        if(board.Id == idTablero)
+                        {
+                            tareasCreadas.Add(task);
+                        }
+                    }
+                } */
+
+                tareasCreadas.AddRange(tareas.Where(task => tableros.Any(board => board.Id == task.IdTablero)));
+                return View(new ListarTareasViewModel(tareasAsignadas, tareasCreadas, idUsuario));
             }
         }
         catch(Exception ex)
@@ -163,11 +184,11 @@ public class TareaController : Controller
     }
 
     [HttpPost]
-    public IActionResult DeleteConfirmed(int idTarea)
+    public IActionResult DeleteConfirmed(int id)
     {
         try
         {
-            if(tareaRepository.Delete(idTarea) > 0)
+            if(tareaRepository.Delete(id) > 0)
             {
                 return RedirectToAction("Index");
             }
