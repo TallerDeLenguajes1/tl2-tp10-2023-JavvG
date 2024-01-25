@@ -11,12 +11,14 @@ public class TableroController : Controller
     private readonly ILogger<TableroController> _logger;
     private readonly ITableroRepository tableroRepository;
     private readonly IUsuarioRepository usuarioRepository;
+    private readonly ITareaRepository tareaRepository;
 
-    public TableroController(ILogger<TableroController> logger, ITableroRepository _tableroRepository, IUsuarioRepository _usuarioRepository)
+    public TableroController(ILogger<TableroController> logger, ITableroRepository _tableroRepository, IUsuarioRepository _usuarioRepository, ITareaRepository _tareaRepository)
     {
         _logger = logger;
         tableroRepository = _tableroRepository;
         usuarioRepository = _usuarioRepository;
+        tareaRepository = _tareaRepository;
     }
 
     // Endpoints
@@ -31,16 +33,29 @@ public class TableroController : Controller
 
             int idUsuario = int.Parse(HttpContext.Session.GetString("id"));
 
+            List<Tarea> tareas = new();
+            List<Tablero> tablerosPropios = new();
+            List<Tablero> tablerosConTareasAsignadas = new();
+
             if(isAdmin())
             {
-                var tableros = tableroRepository.GetAll();
-                return View(new ListarTablerosViewModel(tableros, idUsuario));
+                tablerosPropios = tableroRepository.GetAll();
+                return View(new ListarTablerosViewModel(tablerosPropios, idUsuario));
             }
-            else 
+            else
             {
-                var tableros = tableroRepository.GetByUserId(idUsuario);
-                return View(new ListarTablerosViewModel(tableros, idUsuario));
-            } 
+                tareas = tareaRepository.GetByUsuarioId(idUsuario);
+                tablerosPropios = tableroRepository.GetByUserId(idUsuario);
+
+                foreach(Tarea task in tareas)
+                {
+                    int idTablero = task.IdTablero;
+                    var tableroBuscado = tableroRepository.GetById(idTablero);
+                    tablerosConTareasAsignadas.Add(tableroBuscado);
+                }
+
+                return View(new ListarTablerosViewModel(tablerosPropios, tablerosConTareasAsignadas, idUsuario));
+            }
         }
         catch(Exception ex)
         {
