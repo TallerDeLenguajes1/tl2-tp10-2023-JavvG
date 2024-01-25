@@ -10,11 +10,13 @@ public class TableroController : Controller
 {
     private readonly ILogger<TableroController> _logger;
     private readonly ITableroRepository tableroRepository;
+    private readonly IUsuarioRepository usuarioRepository;
 
-    public TableroController(ILogger<TableroController> logger, ITableroRepository _tableroRepository)
+    public TableroController(ILogger<TableroController> logger, ITableroRepository _tableroRepository, IUsuarioRepository _usuarioRepository)
     {
         _logger = logger;
         tableroRepository = _tableroRepository;
+        usuarioRepository = _usuarioRepository;
     }
 
     // Endpoints
@@ -26,15 +28,18 @@ public class TableroController : Controller
         try
         {
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+
+            int idUsuario = int.Parse(HttpContext.Session.GetString("id"));
+
             if(isAdmin())
             {
                 var tableros = tableroRepository.GetAll();
-                return View(new ListarTablerosViewModel(tableros));
+                return View(new ListarTablerosViewModel(tableros, idUsuario));
             }
             else 
             {
-                var tableros = tableroRepository.GetByUserId(int.Parse(HttpContext.Session.GetString("id")));
-                return View(new ListarTablerosViewModel(tableros));
+                var tableros = tableroRepository.GetByUserId(idUsuario);
+                return View(new ListarTablerosViewModel(tableros, idUsuario));
             } 
         }
         catch(Exception ex)
@@ -46,12 +51,15 @@ public class TableroController : Controller
 
     // Crear tablero
 
-    public IActionResult Create() 
+    public IActionResult Create(int idUsuario) 
     {
         try
         {
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
-            return View(new CrearTableroViewModel());
+
+            List<Usuario> usuarios = usuarioRepository.GetAll();
+
+            return View(new CrearTableroViewModel(idUsuario, usuarios));
         }
         catch(Exception ex)
         {
@@ -80,13 +88,16 @@ public class TableroController : Controller
 
     // Modificar tablero
 
-    public IActionResult Update(int id) 
+    public IActionResult Update(int idTablero, int idUsuario) 
     {
         try
         {
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
-            var tablero = tableroRepository.GetById(id);
-            return View(new ModificarTableroViewModel(tablero));
+
+            var tablero = tableroRepository.GetById(idTablero);
+            var usuarios = usuarioRepository.GetAll();
+
+            return View(new ModificarTableroViewModel(tablero, idUsuario, usuarios));
         }
         catch(Exception ex)
         {
@@ -96,14 +107,14 @@ public class TableroController : Controller
     }
 
     [HttpPost]
-    public IActionResult Update(int id, ModificarTableroViewModel tableroVM)
+    public IActionResult Update(ModificarTableroViewModel tableroVM)
     {
         try
         {
             if(!ModelState.IsValid) return RedirectToAction("Index");
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
             var tablero = new Tablero(tableroVM);
-            tableroRepository.Update(id, tablero);
+            tableroRepository.Update(tablero.Id, tablero);
             return RedirectToAction("Index");
         }
         catch(Exception ex)
