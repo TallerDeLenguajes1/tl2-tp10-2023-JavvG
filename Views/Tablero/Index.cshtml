@@ -1,3 +1,9 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccesor
+@{
+    var session = HttpContextAccesor.HttpContext.Session;
+}
+
 @using tl2_tp10_2023_JavvG.ViewModels
 
 @{
@@ -15,34 +21,105 @@
 
 <div class="text-center">
     <h1 class="display-4">@ViewData["Title"]</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">ID Usuario Propietario</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
-                <th scope="col" colspan=2>Opciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Tablero T in Model.Tableros)
-            {
+    @if(session.GetString("rol") == "operador")
+    {
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@T.Id</td>
-                    <td>@T.IdUsuarioPropietario</td>
-                    <td>@T.Nombre</td>
-                    <td>@T.Descripcion</td>
-                    <td>
-                        <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Modificar</a>
-                    </td>
-                    <td>
-                        <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
-                    </td>
+                    <th scope="col" colspan=5>Tableros propios</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">ID Usuario Propietario</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" colspan=2>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Tablero T in Model.TablerosPropios)
+                {
+                    <tr>
+                        <td>@T.Id</td>
+                        <td>@T.IdUsuarioPropietario</td>
+                        <td>@T.Nombre</td>
+                        <td>@T.Descripcion</td>
+                        <td>
+                            <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Modificar</a>
+                        </td>
+                        <td>
+                            <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <br>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col" colspan=5>Tableros en los que tiene tareas asignadas</th>
+                </tr>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">ID Usuario Propietario</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" colspan=2>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Tablero T in Model.TablerosConTareasAsignadas)
+                {
+                    <tr>
+                        <td>@T.Id</td>
+                        <td>@T.IdUsuarioPropietario</td>
+                        <td>@T.Nombre</td>
+                        <td>@T.Descripcion</td>
+                        <td>
+                            <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Modificar</a>
+                        </td>
+                        <td>
+                            <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">ID Usuario Propietario</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col" colspan=2>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Tablero T in Model.Tableros)
+                {
+                    <tr>
+                        <td>@T.Id</td>
+                        <td>@T.IdUsuarioPropietario</td>
+                        <td>@T.Nombre</td>
+                        <td>@T.Descripcion</td>
+                        <td>
+                            <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Modificar</a>
+                        </td>
+                        <td>
+                            <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
 
 <div class="d-grid gap-2 col-6 mx-auto">
