@@ -139,7 +139,7 @@ public class TareaController : Controller
 
     // Modificar tarea
 
-    public IActionResult Update(int idTarea, int idUsuario, int taskType)
+    public IActionResult Update(int idTarea, int idUsuario, int taskType = 0)
     {
         try
         {
@@ -166,7 +166,7 @@ public class TareaController : Controller
                 case 2:
                     return View("UpdateAssignedTask", tareaVM);
                 default:
-                    return BadRequest(); // Agregamos una ruta por defecto para manejar otros valores de taskType
+                    return BadRequest();
             }
         }
         catch(Exception ex)
