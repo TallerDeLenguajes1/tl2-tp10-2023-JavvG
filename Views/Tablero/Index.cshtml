@@ -26,14 +26,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" colspan=5>Tableros propios</th>
+                    <th scope="col" colspan=6>Tableros propios</th>
                 </tr>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">ID Usuario Propietario</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descripción</th>
-                    <th scope="col" colspan=2>Opciones</th>
+                    <th scope="col" colspan=3>Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +50,9 @@
                         <td>
                             <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
                         </td>
+                        <td>
+                            <a class="modificar" asp-controller="Tarea" asp-action="ShowTasksOnBoard" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver tareas</a>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -60,14 +63,14 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col" colspan=5>Tableros en los que tiene tareas asignadas</th>
+                    <th scope="col" colspan=6>Tableros en los que tiene tareas asignadas</th>
                 </tr>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">ID Usuario Propietario</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descripción</th>
-                    <th scope="col" colspan=2>Opciones</th>
+                    <th scope="col" colspan=3>Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,6 +87,9 @@
                         <td>
                             <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
                         </td>
+                        <td>
+                            <a class="modificar" asp-controller="Tarea" asp-action="ShowTasksOnBoard" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver tareas</a>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -98,7 +104,7 @@
                     <th scope="col">ID Usuario Propietario</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descripción</th>
-                    <th scope="col" colspan=2>Opciones</th>
+                    <th scope="col" colspan=3>Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -114,6 +120,9 @@
                         </td>
                         <td>
                             <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
+                        </td>
+                        <td>
+                            <a class="modificar" asp-controller="Tarea" asp-action="ShowTasksOnBoard" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver tareas</a>
                         </td>
                     </tr>
                 }
