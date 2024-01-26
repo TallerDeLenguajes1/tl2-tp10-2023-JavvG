@@ -121,7 +121,7 @@ public class TareaController : Controller
 
     // Modificar tarea
 
-    public IActionResult Update(int idTarea, int idUsuario)
+    public IActionResult Update(int idTarea, int idUsuario, int taskType)
     {
         try
         {
@@ -140,7 +140,18 @@ public class TareaController : Controller
             var tarea = tareaRepository.GetById(idTarea);
             var tareaVM = new ModificarTareaViewModel(tarea, usuarios, tableros);
 
-            return View(tareaVM);
+            if(taskType == 1)
+            {
+                return View("Update", tareaVM);
+            }
+            else if(taskType == 2)
+            {
+                return View("UpdateAssignedTask", tareaVM);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
         catch(Exception ex)
         {
