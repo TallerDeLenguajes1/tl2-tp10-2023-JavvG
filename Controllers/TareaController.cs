@@ -73,6 +73,24 @@ public class TareaController : Controller
         } 
     }
 
+    public IActionResult ShowTasksOnBoard(int idTablero, int idUsuario)
+    {
+        try
+        {
+            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+
+            List<Tarea> tareas = tareaRepository.GetByTableroId(idTablero);
+            
+            return View(new ListarTareasViewModel(tareas, idUsuario));
+            
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return BadRequest();
+        } 
+    }
+
     // Crear tarea
 
     public IActionResult Create(int idUsuario) 
@@ -140,17 +158,15 @@ public class TareaController : Controller
             var tarea = tareaRepository.GetById(idTarea);
             var tareaVM = new ModificarTareaViewModel(tarea, usuarios, tableros);
 
-            if(taskType == 1)
+            switch (taskType)
             {
-                return View("Update", tareaVM);
-            }
-            else if(taskType == 2)
-            {
-                return View("UpdateAssignedTask", tareaVM);
-            }
-            else
-            {
-                return BadRequest();
+                case 0:
+                case 1:
+                    return View("Update", tareaVM);
+                case 2:
+                    return View("UpdateAssignedTask", tareaVM);
+                default:
+                    return BadRequest(); // Agregamos una ruta por defecto para manejar otros valores de taskType
             }
         }
         catch(Exception ex)
