@@ -24,7 +24,7 @@ public class TareaController : Controller
 
     // Endpoints
 
-    // Listar tareas
+    // Mostrar tareas
 
     public IActionResult Index()
     {
@@ -42,7 +42,7 @@ public class TareaController : Controller
             if(isAdmin())
             {
                 tareas = tareaRepository.GetAll();
-                return View(new ListarTareasViewModel(tareas, idUsuario));
+                return View("IndexAdministratorUser", new ListarTareasViewModel(tareas, idUsuario));
             }
             else
             {
@@ -63,7 +63,7 @@ public class TareaController : Controller
                 } */
 
                 tareasCreadas.AddRange(tareas.Where(task => tableros.Any(board => board.Id == task.IdTablero)));
-                return View(new ListarTareasViewModel(tareasAsignadas, tareasCreadas, idUsuario));
+                return View("IndexOperatorUser", new ListarTareasViewModel(tareasAsignadas, tareasCreadas, idUsuario));
             }
         }
         catch(Exception ex)
