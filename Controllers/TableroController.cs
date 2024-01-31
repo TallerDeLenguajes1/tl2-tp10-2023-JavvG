@@ -142,11 +142,11 @@ public class TableroController : Controller
     
     // Eliminar tablero
 
-    public IActionResult Delete(int id) 
+    public IActionResult Delete(int idTablero) 
     {
         try
         {
-            return View(tableroRepository.GetById(id));
+            return View(tableroRepository.GetById(idTablero));
         }
         catch(Exception ex)
         {
