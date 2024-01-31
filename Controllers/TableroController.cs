@@ -23,7 +23,7 @@ public class TableroController : Controller
 
     // Endpoints
 
-    // Listar tableros
+    // Mostrar tableros
 
     public IActionResult Index() 
     {
@@ -40,7 +40,7 @@ public class TableroController : Controller
             if(isAdmin())
             {
                 tablerosPropios = tableroRepository.GetAll();
-                return View(new ListarTablerosViewModel(tablerosPropios, idUsuario));
+                return View("IndexAdministratorUser", new ListarTablerosViewModel(tablerosPropios, idUsuario));
             }
             else
             {
@@ -54,7 +54,7 @@ public class TableroController : Controller
                     tablerosConTareasAsignadas.Add(tableroBuscado);
                 }
 
-                return View(new ListarTablerosViewModel(tablerosPropios, tablerosConTareasAsignadas, idUsuario));
+                return View("IndexOperatorUser", new ListarTablerosViewModel(tablerosPropios, tablerosConTareasAsignadas, idUsuario));
             }
         }
         catch(Exception ex)
