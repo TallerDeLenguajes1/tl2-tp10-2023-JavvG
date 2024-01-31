@@ -81,7 +81,14 @@ public class TareaController : Controller
 
             List<Tarea> tareas = tareaRepository.GetByTableroId(idTablero);
             
-            return View(new ListarTareasViewModel(tareas, idUsuario));
+            if(isAdmin())
+            {
+                return View("TasksOnBoardAdministratorUser", new ListarTareasViewModel(tareas, idUsuario));
+            }
+            else
+            {
+                return View("TasksOnBoardOperatorUser", new ListarTareasViewModel(tareas, idUsuario));
+            }
             
         }
         catch(Exception ex)
