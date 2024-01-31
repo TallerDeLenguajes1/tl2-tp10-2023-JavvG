@@ -1,0 +1,55 @@
+@using tl2_tp10_2023_JavvG.ViewModels
+
+@{
+    ViewData["Title"] = "Tableros";
+}
+
+@model ListarTablerosViewModel
+
+@if(TempData.ContainsKey("ErrorMessage")) 
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">ID Usuario Propietario</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" colspan=3>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Tablero T in Model.Tableros)
+            {
+                <tr>
+                    <td>@T.Id</td>
+                    <td>@T.IdUsuarioPropietario</td>
+                    <td>@T.Nombre</td>
+                    <td>@T.Descripcion</td>
+                    <td>
+                        <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Modificar</a>
+                    </td>
+                    <td>
+                        <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-id="@T.Id">Eliminar</a>
+                    </td>
+                    <td>
+                        <a class="modificar" asp-controller="Tarea" asp-action="ShowTasksOnBoard" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver tareas</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a asp-controller="Tablero" asp-action="Create" asp-route-idUsuario="@Model.IdUsuario"><button class="btn btn-primary boton" type="button">Añadir un nuevo tablero </button></a>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
