@@ -54,6 +54,10 @@ public class TableroController : Controller
                     tablerosConTareasAsignadas.Add(tableroBuscado);
                 }
 
+                // Con GruopBy(...) se agrupan los tableros según su ID. Luego, con Select(...) se toma cada grupo y se selecciona el primer elemento, y ToList(...) convierte la secuencia resultante en una lista.
+                
+                tablerosConTareasAsignadas = tablerosConTareasAsignadas.GroupBy(tablero => tablero.Id).Select(group => group.First()).ToList();
+
                 return View("IndexOperatorUser", new ListarTablerosViewModel(tablerosPropios, tablerosConTareasAsignadas, idUsuario));
             }
         }
