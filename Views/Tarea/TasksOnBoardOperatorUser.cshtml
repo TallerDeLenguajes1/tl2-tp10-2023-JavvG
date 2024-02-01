@@ -39,17 +39,25 @@
                     {
                         <td>No tiene</td>
                     }
-                    
                     @if(T.IdUsuarioAsignado == Model.IdUsuario)
                     {
                         <td>
-                        <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=2>Modificar</a>
+                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=2>Modificar</a>
                         </td>
                         <td>
                             <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar</a>
                         </td>
                     }
-                    else
+                    else if(Model.TareasCreadas != null && Model.TareasCreadas.Any(task => task.Id == T.Id))
+                    {
+                        <td>
+                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=1>Modificar</a>
+                        </td>
+                        <td>
+                            <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar</a>
+                        </td>
+                    }
+                    else 
                     {
                         <td colspan=2>No permitido</td>
                     }
@@ -60,7 +68,7 @@
 </div>
 
 <div class="d-grid gap-2 col-6 mx-auto">
-    <a asp-controller="Tarea" asp-action="Create" asp-route-idUsuario="@Model.IdUsuario">
+    <a asp-controller="Tarea" asp-action="Create" asp-route-idUsuario="@Model.IdUsuario" asp-route-idTablero="@Model.Tareas.First().IdTablero">
         <button class="btn btn-primary boton" type="button">Añadir una nueva tarea </button>
     </a>
 </div>
