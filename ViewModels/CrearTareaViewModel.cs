@@ -44,6 +44,13 @@ public class CrearTareaViewModel
         TablerosRegistrados = tableros;
     }
 
+    public CrearTareaViewModel(List<Usuario> usuarios, List<Tablero> tableros, int idTablero) 
+    {
+        UsuariosRegistrados = usuarios;
+        TablerosRegistrados = tableros;
+        IdTablero = idTablero;
+    }
+
     public CrearTareaViewModel(Tarea tarea)
     {
         Id = tarea.Id;
