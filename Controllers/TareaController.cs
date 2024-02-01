@@ -38,7 +38,7 @@ public class TareaController : Controller
             List<Tarea> tareasAsignadas = new();
             List<Tarea> tareasCreadas = new();
             List<Tablero> tableros = new();
-
+ 
             if(isAdmin())
             {
                 tareas = tareaRepository.GetAll();
@@ -80,6 +80,9 @@ public class TareaController : Controller
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
 
             List<Tarea> tareas = tareaRepository.GetByTableroId(idTablero);
+            List<Tablero> tableros = tableroRepository.GetByUserId(idUsuario);
+            List<Tarea> tareasCreadas = new();
+            tareasCreadas.AddRange(tareas.Where(task => tableros.Any(board => board.Id == task.IdTablero)));
             
             if(isAdmin())
             {
@@ -87,7 +90,7 @@ public class TareaController : Controller
             }
             else
             {
-                return View("TasksOnBoardOperatorUser", new ListarTareasViewModel(tareas, idUsuario));
+                return View("TasksOnBoardOperatorUser", new ListarTareasViewModel(tareas, tareasCreadas, idUsuario));
             }
             
         }
@@ -100,7 +103,7 @@ public class TareaController : Controller
 
     // Crear tarea
 
-    public IActionResult Create(int idUsuario) 
+    public IActionResult Create(int idUsuario, int idTablero = -999) 
     {
         try
         {
@@ -116,7 +119,14 @@ public class TareaController : Controller
                 tableros = tableroRepository.GetByUserId(idUsuario);
             }
 
-            return View(new CrearTareaViewModel(usuarios, tableros));
+            if(idTablero != -999)
+            {
+                return View("CreateOnBoard", new CrearTareaViewModel(usuarios, tableros, idTablero));
+            }
+            else 
+            {
+                return View(new CrearTareaViewModel(usuarios, tableros));
+            }
         }
         catch(Exception ex)
         {
