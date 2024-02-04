@@ -39,6 +39,7 @@ public class LoginController : Controller
                 // Acceso rechazado
                 _logger.LogWarning($"Intento de acceso inválido - Usuario: {usuario.NombreUsuario.Trim()} - Clave ingresada: {usuario.Password}");
 
+                TempData["ErrorMessage"] = "Ha ingresado credenciales incorrectas, o el usuario no existe";
                 return RedirectToAction("Index");       // Si el usuario no existe, retorna a 'Index'
             }
             else 
@@ -50,11 +51,11 @@ public class LoginController : Controller
 
                 if (HttpContext.Session.GetString("rol") == Rol.administrador.ToString())
                 {
-                    return RedirectToRoute(new { controller = "Usuario", action = "Index" });
+                    return RedirectToRoute(new { controller = "Home", action = "Index" });
                 }
                 else
                 {
-                    return RedirectToRoute(new { controller = "Tablero", action = "Index" });
+                    return RedirectToRoute(new { controller = "Home", action = "Index" });
                 }
             }
         }
