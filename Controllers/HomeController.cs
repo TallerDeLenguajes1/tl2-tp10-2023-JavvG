@@ -15,7 +15,26 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        try
+        {
+            // Se verifica que el usuario esté logueado correctamente
+
+            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") 
+            {
+                TempData["ErrorMessage"] = "Inicie sesión antes de acceder a este sitio";
+                return RedirectToRoute(new { controller = "Login", action = "Index" });
+            }
+            else
+            {
+                if(HttpContext.Session.GetString("rol") == "administrador") return View("IndexAdministratorUser");
+                return View("IndexOperatorUser");
+            }
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex.ToString());
+            return BadRequest();
+        }
     }
 
     public IActionResult Privacy()
