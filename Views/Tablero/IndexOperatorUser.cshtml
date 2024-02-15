@@ -22,10 +22,9 @@
                     <th scope="col" colspan=5>Tableros propios</th>
                 </tr>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">ID Usuario Propietario</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descripción</th>
+                    <th scope="col">Propietario</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>
@@ -33,10 +32,15 @@
                 @foreach (Tablero T in Model.TablerosPropios)
                 {
                     <tr>
-                        <td>@T.Id</td>
-                        <td>@T.IdUsuarioPropietario</td>
                         <td>@T.Nombre</td>
                         <td>@T.Descripcion</td>
+                        @foreach(Usuario user in Model.UsuariosRegistrados)
+                        {
+                            if(user.Id == T.IdUsuarioPropietario)
+                            {
+                                <td>@user.Nombre</td>
+                            }
+                        }
                         <td>
                             <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Editar</a>
                             <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-idTablero="@T.Id">Eliminar</a>
@@ -55,10 +59,9 @@
                     <th scope="col" colspan=5>Tableros en los que tiene tareas asignadas</th>
                 </tr>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">ID Usuario Propietario</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descripción</th>
+                    <th scope="col">Propietario</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>
@@ -66,10 +69,15 @@
                 @foreach (Tablero T in Model.TablerosConTareasAsignadas)
                 {
                     <tr>
-                        <td>@T.Id</td>
-                        <td>@T.IdUsuarioPropietario</td>
                         <td>@T.Nombre</td>
                         <td>@T.Descripcion</td>
+                        @foreach(Usuario user in Model.UsuariosRegistrados)
+                        {
+                            if(user.Id == T.IdUsuarioPropietario)
+                            {
+                                <td>@user.Nombre</td>
+                            }
+                        }
                         <td>
                             <a class="verTareas" asp-controller="Tarea" asp-action="ShowTasksOnBoard" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver tareas</a>
                         </td>
