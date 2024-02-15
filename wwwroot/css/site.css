@@ -9,7 +9,7 @@ html {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(128, 128, 128, 0.523);
 }
 
 html {
@@ -19,4 +19,293 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/* Modificaciones personales */
+
+/* Layout CSS */
+
+body {
+  background-image: url('../wallpaper/wallpaper.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  color: white !important;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.navbar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  width: 50%;
+  border-radius: 60px;
+  backdrop-filter: blur(20px);
+  border: 1px solid gray;
+  padding: 5px;
+  color: white;
+}
+
+.navbar-brand {
+  font-size: 1rem;
+}
+
+.navbar-nav {
+  font-size: 0.8rem;
+  margin-right: auto;
+}
+
+.navbar-collapse {
+  justify-content: center;
+}
+
+.nav-item .nav-link {
+  background-color: gray;
+  color: white;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid gray;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 10px;
+  color: rgb(222, 222, 222) !important;
+  letter-spacing: 0.5px;
+  outline: none;
+  text-align: center;
+}
+
+/* Forms CSS */
+
+.text-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.visionOS-card {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  border-radius: 80px;
+  backdrop-filter: blur(20px);
+  border: 1px solid gray;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 60px;
+  color: rgb(222, 222, 222) !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 50px auto;
+}
+
+.user-options-list {
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.user-options-list h1, .user-options-list h2, .user-options-list h3, .user-options-list h4 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.user-options-list li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.user-options-list li a {
+  color: rgb(222, 222, 222);
+  background-color: rgba(255, 255, 255, 0.195) !important;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  border-radius: 60px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgb(168, 168, 168);
+  padding: 20px 40px;
+  font-size: large;
+  text-decoration: none;
+  transition: 0.15s ease-in-out;
+}
+
+.user-options-list li a:hover, .user-options-list li a:focus {
+  border: 1px solid rgba(255, 255, 255, 0.742);
+  background-color: rgba(255, 255, 255, 0.29) !important;
+  backdrop-filter: blur(50px);
+  box-shadow: 0 0 70px rgba(8, 7, 16, 0.835);
+  color: white;
+  transition: 0.3s
+}
+
+form {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  border-radius: 80px;
+  backdrop-filter: blur(20px);
+  border: 1px solid gray;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 60px;
+  color: rgb(222, 222, 222) !important;
+  width: 500px;
+  letter-spacing: 0.5px;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 50px auto;
+}
+
+form h2, form h1 {
+  font-size: 40px !important;
+  font-weight: 400 !important;
+  text-align: center !important;
+  margin-bottom: 20px !important;
+}
+
+label {
+  display: block;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 250;
+}
+
+input, select {
+  display: block;
+  height: 50px;
+  width: 100%;
+  color: rgb(222, 222, 222) !important;
+  background-color: rgba(0, 0, 0, 0.319) !important;
+  border-radius: 12px !important;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500 !important;
+  border: none !important;
+  transition: 0.1s;
+  text-align: center;
+}
+
+::placeholder {
+  color: gray;
+}
+
+.btn, .login-form-button {
+  padding: 10px 20px 10px 20px;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  border-radius: 24px;
+  margin: 5px;
+  color: rgb(222, 222, 222);
+  background-color: rgba(255, 255, 255, 0.195) !important;
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  border-radius: 60px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgb(168, 168, 168);
+  transition: 0.15s ease-in-out;
+}
+
+.btn-danger {
+  border: 1px solid rgba(255, 0, 0, 0.6);
+  background-color: rgba(255, 0, 0, 0.566) !important;
+}
+
+.btn:hover, .btn:focus, .login-form-button:hover, .login-form-button:focus {
+  transition: 0.15s;
+  border: 1px solid rgba(255, 255, 255, 0.772);
+  backdrop-filter: blur(50px);
+  color: white;
+  box-shadow: 0 0 70px rgba(8, 7, 16, 0.835);
+}
+
+.btn-danger:hover, .btn-danger:focus {
+  transition: 0.3s;
+  background-color: rgba(255, 0, 0, 0.742) !important;
+  border-color: red;
+  color: white;
+}
+
+.login-form-button {
+  padding: 15px 0;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+  margin-top: 30px;
+}
+
+.alert {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 0, 0, 0.355);
+  background-color: rgba(255, 0, 0, 0.522);
+  backdrop-filter: blur(20px);
+  color: rgb(227, 227, 227);
+  font-size: larger;
+  text-align: center;
+  width: 25%;
+  margin-top: 30px;
+}
+
+.table-container {
+  margin-top: 30px;
+  background-color: rgba(255, 255, 255, 0.095);
+  border-radius: 40px;
+  backdrop-filter: blur(50px);
+  border: 1px solid rgb(168, 168, 168);
+  padding: 20px;
+  color: rgb(222, 222, 222);
+}
+
+.table-container a {
+  color: rgb(222, 222, 222);
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.195);
+  border-radius: 60px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgb(168, 168, 168);
+  padding: 10px;
+  transition: 0.15s ease-in-out;
+}
+
+.table-container a:hover, .table-container a:focus {
+  transition: 0.15s;
+  border: 1px solid rgba(255, 255, 255, 0.772);
+  backdrop-filter: blur(50px);
+  color: white;
+  box-shadow: 0 0 70px rgba(8, 7, 16, 0.835);
+}
+
+.table-container th {
+  background-color: rgba(255, 255, 255, 0.195);
+  padding: 8px 12px;
+  border-radius: 60px;
+}
+
+.table-container td {
+  padding: 20px 10px;
+}
+
+.table-container tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.355);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.short-column {
+  width: 25%;
 }
