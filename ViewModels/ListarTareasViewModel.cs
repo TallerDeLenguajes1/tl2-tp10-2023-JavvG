@@ -12,6 +12,8 @@ public class ListarTareasViewModel
 
     public int IdUsuario { get; set; }
 
+    public Tarea TareaSeleccionada { get; set; }
+
     public ListarTareasViewModel() 
     {
         Tareas = new();
@@ -28,6 +30,12 @@ public class ListarTareasViewModel
     public ListarTareasViewModel(List<Tarea> tareas, int idUsuario)
     {
         Tareas = tareas;
+        IdUsuario = idUsuario;
+    }
+
+    public ListarTareasViewModel(Tarea tarea, int idUsuario)
+    {
+        TareaSeleccionada = tarea;
         IdUsuario = idUsuario;
     }
 
