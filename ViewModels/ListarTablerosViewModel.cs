@@ -14,6 +14,8 @@ public class ListarTablerosViewModel
 
     public List<Tablero> TablerosConTareasAsignadas { get; set; }
 
+    public List<Usuario> UsuariosRegistrados { get; set; }
+
     public ListarTablerosViewModel() 
     {
         Tableros = new();
@@ -21,16 +23,18 @@ public class ListarTablerosViewModel
         TablerosConTareasAsignadas = new();
     }
 
-    public ListarTablerosViewModel(List<Tablero> tableros, int idUsuario)
+    public ListarTablerosViewModel(List<Tablero> tableros, int idUsuario, List<Usuario> usuarios)
     {
         Tableros = tableros;
         IdUsuario = idUsuario;
+        UsuariosRegistrados = usuarios;
     }
 
-    public ListarTablerosViewModel(List<Tablero> tableros1, List<Tablero> tableros2, int idUsuario)
+    public ListarTablerosViewModel(List<Tablero> tableros1, List<Tablero> tableros2, int idUsuario, List<Usuario> usuarios)
     {
         TablerosPropios = tableros1;
         TablerosConTareasAsignadas = tableros2;
         IdUsuario = idUsuario;
+        UsuariosRegistrados = usuarios;
     }
 }
