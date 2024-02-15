@@ -36,11 +36,12 @@ public class TableroController : Controller
             List<Tarea> tareas = new();
             List<Tablero> tablerosPropios = new();
             List<Tablero> tablerosConTareasAsignadas = new();
+            List<Usuario> usuariosRegistrados = usuarioRepository.GetAll();
 
             if(isAdmin())
             {
                 tablerosPropios = tableroRepository.GetAll();
-                return View("IndexAdministratorUser", new ListarTablerosViewModel(tablerosPropios, idUsuario));
+                return View("IndexAdministratorUser", new ListarTablerosViewModel(tablerosPropios, idUsuario, usuariosRegistrados));
             }
             else
             {
@@ -58,7 +59,7 @@ public class TableroController : Controller
                 
                 tablerosConTareasAsignadas = tablerosConTareasAsignadas.GroupBy(tablero => tablero.Id).Select(group => group.First()).ToList();
 
-                return View("IndexOperatorUser", new ListarTablerosViewModel(tablerosPropios, tablerosConTareasAsignadas, idUsuario));
+                return View("IndexOperatorUser", new ListarTablerosViewModel(tablerosPropios, tablerosConTareasAsignadas, idUsuario, usuariosRegistrados));
             }
         }
         catch(Exception ex)
