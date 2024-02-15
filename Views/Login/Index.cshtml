@@ -12,20 +12,15 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Login" asp-action="Login" method="post" autocomplete="off">
-        <div class="form-group">
-            <label asp-for="@Model.NombreUsuario"></label>
-            <input asp-for="@Model.NombreUsuario" class="form-control"/>
-            <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>    
-        </div>
-
-        <div class="form-group">
-            <label asp-for="@Model.Password"></label>
-            <input asp-for="@Model.Password" class="form-control" type="password" />
-            <span asp-validation-for="@Model.Password" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        <h2 class="display-4">@ViewData["Title"]</h2>
+        <label asp-for="@Model.NombreUsuario"></label>
+        <input asp-for="@Model.NombreUsuario" class="form-control"/>
+        <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>  
+        <label asp-for="@Model.Password"></label>
+        <input asp-for="@Model.Password" class="form-control" type="password" />
+        <span asp-validation-for="@Model.Password" class="text-danger"></span>
+        <button type="submit" class="login-form-button">Iniciar sesión</button>
     </form>
 </div>
 

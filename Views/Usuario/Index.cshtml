@@ -1,41 +1,38 @@
 @{
-    ViewData["Title"] = "Usuarios";
+    ViewData["Title"] = "Usuarios registrados";
 }
 
 @model tl2_tp10_2023_JavvG.ViewModels.ListarUsuariosViewModel;
 
-<div class="text-center">
+<div class="text-center visionOS-card">
     <h1 class="display-4">@ViewData["Title"]</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Nombre</th>
-                <th scope="col" colspan=2>Opciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (Usuario U in Model.Usuarios)
-            {
+    <div class="table-container">
+        <table>
+            <thead>
                 <tr>
-                    <th scope="row">@U.Id</th>
-                    <td>@U.Nombre</td>
-                    <td>
-                        <a class="modificar" asp-controller="Usuario" asp-action="Update" asp-route-id="@U.Id">Modificar</a>
-                    </td>
-                    <td>
-                        <a class="eliminar" asp-controller="Usuario" asp-action="Delete" asp-route-id="@U.Id">Eliminar</a>
-                    </td>
-                    @* <td scope="row">
-                        <a class="ver" asp-controller="Tarea" asp-action="tareasUsuario" asp-route-id="@u.Id">Ver</a>
-                    </td> *@
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Opciones</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (Usuario U in Model.Usuarios)
+                {
+                    <tr>
+                        <td scope="row">@U.Id</td>
+                        <td>@U.Nombre</td>
+                        <td>
+                            <a class="modificar" asp-controller="Usuario" asp-action="Update" asp-route-id="@U.Id">Editar</a>
+                            <a class="eliminar" asp-controller="Usuario" asp-action="Delete" asp-route-id="@U.Id">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<div class="d-grid gap-2 col-6 mx-auto">
+<div class="d-grid gap-2">
     <a asp-controller="Usuario" asp-action="Create"><button class="btn btn-primary boton" type="button">Añadir un nuevo usuario </button></a>
 </div>
 

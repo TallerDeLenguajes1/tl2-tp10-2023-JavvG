@@ -8,10 +8,10 @@
     ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">¡Bienvenido, @session.GetString("nombreUsuario")!</h1>
-    <h3>Estas son las opciones que tiene a su disposición:</h3>
-    <ul>
+<div class="text-center visionOS-card">
+    <h2 class="display-4">¡Bienvenido, @session.GetString("nombreUsuario")!</h2>
+    <h4>Estas son las opciones que tiene a su disposición:</h4>
+    <ul class="user-options-list list-group">
         <li><a asp-controller="Tablero" asp-action="Index">Ver sus tableros, y aquellos en los que tiene tareas asignadas</a></li>
         <li><a asp-controller="Tarea" asp-action="Index">Ver todas las tareas creadas, y aquellas que le fueron asignadas</a></li>
     </ul>

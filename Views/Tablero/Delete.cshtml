@@ -5,9 +5,9 @@
 @model Tablero
 
 <div class="text-center">
-    <h1>@ViewData["Title"]</h1>
     <form asp-controller="Tablero" asp-action="DeleteConfirmed" method="post">
-        <h2>¿Desea confirmar la eliminación del tablero '@Model.Nombre'?</h2>
+        <h1>@ViewData["Title"]</h1>
+        <h4>¿Desea confirmar la eliminación del tablero "@Model.Nombre"?</h4>
         <div>
             <button type="submit" class="btn btn-danger">Eliminar</button>
             <input hidden asp-for="@Model.Id">

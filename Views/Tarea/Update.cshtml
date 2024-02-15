@@ -7,8 +7,8 @@
 @model ModificarTareaViewModel
 
 <div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
     <form asp-controller="Tarea" asp-action="Update" method="post" autocomplete="off">
+        <h1 class="display-4">@ViewData["Title"]</h1>
         <div class="mb-3">
             <input hidden asp-for="@Model.Id" value="@Model.Id">
             <label for="nombre" class="form-label">Nuevo título</label>
