@@ -73,6 +73,12 @@ public class TareaController : Controller
         } 
     }
 
+    public IActionResult ShowSingleTask(int idTarea, int idUsuario)
+    {
+        var tarea = tareaRepository.GetById(idTarea);
+        return View("SingleTaskView", new ListarTareasViewModel(tarea, idUsuario));
+    }
+
     public IActionResult ShowTasksOnBoard(int idTablero, int idUsuario)
     {
         try
