@@ -8,37 +8,71 @@
         <table>
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">ID Tablero</th>
                     <th scope="col">Nombre</th>
                     <th scope="col" class="short-column">Descripción</th>
+                    <th scope="col">Usuario asignado</th>
                     <th scope="col">Color</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">ID Usuario Asignado</th>
+                    <th scope="col">Tablero</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>@Model.TareaSeleccionada.Id</td>
-                    <td>@Model.TareaSeleccionada.IdTablero</td>
                     <td>@Model.TareaSeleccionada.Nombre</td>
                     <td>@Model.TareaSeleccionada.Descripcion</td>
-                    <td>@Model.TareaSeleccionada.Color</td>
-                    <td>@Model.TareaSeleccionada.Estado</td>
                     @if(Model.TareaSeleccionada.IdUsuarioAsignado != null)
                     {
-                        <td>@Model.TareaSeleccionada.IdUsuarioAsignado</td>
+                        foreach(Usuario user in Model.UsuariosRegistrados)
+                        {
+                            if(user.Id == Model.TareaSeleccionada.IdUsuarioAsignado)
+                            {
+                                <td>@user.Nombre</td>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <td>No tiene</td>
+                    } 
+                    <td style="overflow: hidden;">
+                            <div style="background-color: @Model.TareaSeleccionada.Color; width: 30px; height: 30px; border-radius: 50%;"></div>
+                        </td>
+                    <td>@Model.TareaSeleccionada.Estado</td>
+                    @if(Model.TareaSeleccionada.IdTablero != null)
+                    {
+                        foreach(Tablero board in Model.TablerosRegistrados)
+                        {
+                            if(board.Id == Model.TareaSeleccionada.IdTablero)
+                            {
+                                <td>@board.Nombre</td>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <td>No tiene</td>
+                    } 
+
+                    @if(Model.TareaSeleccionada.IdUsuarioAsignado == Model.IdUsuario)
+                    {
+                        <td>
+                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@Model.TareaSeleccionada.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=2>Editar</a>
+                            <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@Model.TareaSeleccionada.Id">Eliminar</a>
+                        </td>
+                    }
+                    else if(Model.TareasCreadas != null && Model.TareasCreadas.Any(task => task.Id == Model.TareaSeleccionada.Id))
+                    {
+                        <td>
+                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@Model.TareaSeleccionada.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=1>Editar</a>
+                            <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@Model.TareaSeleccionada.Id">Eliminar</a>
+                        </td>
                     }
                     else 
                     {
-                        <td>No tiene</td>
+                        <td>No permitido</td>
                     }
-                    
-                    <td>
-                        <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@Model.TareaSeleccionada.Id" asp-route-idUsuario="@Model.IdUsuario">Editar</a>
-                        <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@Model.TareaSeleccionada.Id">Eliminar</a>
-                    </td>
+
                 </tr>
             </tbody>
         </table>

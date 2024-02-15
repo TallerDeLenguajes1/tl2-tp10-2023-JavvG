@@ -12,13 +12,12 @@
         <table>
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">ID Tablero</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
+                    <th scope="col" class="short-column">Descripción</th>
+                    <th scope="col">Usuario asignado</th>
                     <th scope="col">Color</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">ID Usuario Asignado</th>
+                    <th scope="col">Tablero</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>
@@ -26,20 +25,40 @@
                 @foreach (Tarea T in Model.Tareas)
                 {
                     <tr>
-                        <td>@T.Id</td>
-                        <td>@T.IdTablero</td>
                         <td>@T.Nombre</td>
                         <td>@T.Descripcion</td>
-                        <td>@T.Color</td>
-                        <td>@T.Estado</td>
                         @if(T.IdUsuarioAsignado != null)
                         {
-                            <td>@T.IdUsuarioAsignado</td>
+                            foreach(Usuario user in Model.UsuariosRegistrados)
+                            {
+                                if(user.Id == T.IdUsuarioAsignado)
+                                {
+                                    <td>@user.Nombre</td>
+                                }
+                            }
                         }
-                        else 
+                        else
                         {
                             <td>No tiene</td>
+                        } 
+                        <td style="overflow: hidden;">
+                            <div style="background-color: @T.Color; width: 30px; height: 30px; border-radius: 50%;"></div>
+                        </td>
+                        <td>@T.Estado</td>
+                        @if(T.IdTablero != null)
+                        {
+                            foreach(Tablero board in Model.TablerosRegistrados)
+                            {
+                                if(board.Id == T.IdTablero)
+                                {
+                                    <td>@board.Nombre</td>
+                                }
+                            }
                         }
+                        else
+                        {
+                            <td>No tiene</td>
+                        } 
                         @if(T.IdUsuarioAsignado == Model.IdUsuario)
                         {
                             <td>
