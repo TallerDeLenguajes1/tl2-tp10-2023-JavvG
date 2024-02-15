@@ -37,18 +37,20 @@ public class TareaController : Controller
             List<Tarea> tareas = new();
             List<Tarea> tareasAsignadas = new();
             List<Tarea> tareasCreadas = new();
-            List<Tablero> tableros = new();
+
+            List<Tablero> tableros = tableroRepository.GetAll();
+            List<Usuario> usuarios = usuarioRepository.GetAll();
  
             if(isAdmin())
             {
                 tareas = tareaRepository.GetAll();
-                return View("IndexAdministratorUser", new ListarTareasViewModel(tareas, idUsuario));
+                return View("IndexAdministratorUser", new ListarTareasViewModel(tareas, idUsuario, usuarios, tableros));
             }
             else
             {
                 tareas = tareaRepository.GetAll();
                 tareasAsignadas = tareaRepository.GetByUsuarioId(idUsuario);
-                tableros = tableroRepository.GetByUserId(idUsuario);
+                List<Tablero> tablerosDeUsuario = tableroRepository.GetByUserId(idUsuario);
 
                 /* foreach (Tarea task in tareas)
                 {
@@ -62,8 +64,8 @@ public class TareaController : Controller
                     }
                 } */
 
-                tareasCreadas.AddRange(tareas.Where(task => tableros.Any(board => board.Id == task.IdTablero)));
-                return View("IndexOperatorUser", new ListarTareasViewModel(tareasAsignadas, tareasCreadas, idUsuario));
+                tareasCreadas.AddRange(tareas.Where(task => tablerosDeUsuario.Any(board => board.Id == task.IdTablero)));
+                return View("IndexOperatorUser", new ListarTareasViewModel(tareasAsignadas, tareasCreadas, idUsuario, usuarios, tableros));
             }
         }
         catch(Exception ex)
@@ -76,7 +78,9 @@ public class TareaController : Controller
     public IActionResult ShowSingleTask(int idTarea, int idUsuario)
     {
         var tarea = tareaRepository.GetById(idTarea);
-        return View("SingleTaskView", new ListarTareasViewModel(tarea, idUsuario));
+        var usuarios = usuarioRepository.GetAll();
+        var tableros = tableroRepository.GetAll();
+        return View("SingleTaskView", new ListarTareasViewModel(tarea, idUsuario, usuarios, tableros));
     }
 
     public IActionResult ShowTasksOnBoard(int idTablero, int idUsuario)
@@ -85,18 +89,21 @@ public class TareaController : Controller
         {
             if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
 
-            List<Tarea> tareas = tareaRepository.GetByTableroId(idTablero);
-            List<Tablero> tableros = tableroRepository.GetByUserId(idUsuario);
+            List<Tarea> tareasDeTablero = tareaRepository.GetByTableroId(idTablero);
+            List<Tablero> tablerosDeUsuario = tableroRepository.GetByUserId(idUsuario);
             List<Tarea> tareasCreadas = new();
-            tareasCreadas.AddRange(tareas.Where(task => tableros.Any(board => board.Id == task.IdTablero)));
+            tareasCreadas.AddRange(tareasDeTablero.Where(task => tablerosDeUsuario.Any(board => board.Id == task.IdTablero)));
+
+            var tableros = tableroRepository.GetAll();
+            var usuarios = usuarioRepository.GetAll();
             
             if(isAdmin())
             {
-                return View("TasksOnBoardAdministratorUser", new ListarTareasViewModel(tareas, idUsuario));
+                return View("TasksOnBoardAdministratorUser", new ListarTareasViewModel(tareasDeTablero, idUsuario, usuarios, tableros));
             }
             else
             {
-                return View("TasksOnBoardOperatorUser", new ListarTareasViewModel(tareas, tareasCreadas, idUsuario));
+                return View("TasksOnBoardOperatorUser", new ListarTareasViewModel(tareasDeTablero, tareasCreadas, idUsuario, usuarios, tableros));
             }
             
         }
