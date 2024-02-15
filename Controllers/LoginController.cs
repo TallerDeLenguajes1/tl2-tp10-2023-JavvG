@@ -74,6 +74,27 @@ public class LoginController : Controller
         }
     }
 
+    public IActionResult Logout() 
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult LogoutConfirmed()
+    {
+        try
+        {
+            HttpContext.Session.Clear();    // Elimina todas las variables de sesión al cerrar sesión
+            _logger.LogInformation("Usuario cerró sesión correctamente.");
+            return RedirectToAction("Index", "Login");      // Redirige a la página de inicio de sesión
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error durante el cierre de sesión: {ex.ToString()}");
+            return BadRequest();
+        }
+    }
+
     private void LoguearUsuario(Usuario usuario)
     {
         HttpContext.Session.SetString("id", usuario.Id.ToString());         // Establece una variable de sesión, "id", con el valor 'usuario.Id'
