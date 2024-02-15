@@ -27,7 +27,7 @@ public class UsuarioController : Controller
         {
             // Se verifica que el usuario esté logueado correctamente
 
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();       // Propiedad de ASP.NET Core, verifica que el usuario se haya autenticado correctamente. Se llena automáticamente cuando el usuario se loguea
+            if(HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
 
             // El acceso a todos los usuarios esta permitido sólo para el usuario 'administrador'
 
