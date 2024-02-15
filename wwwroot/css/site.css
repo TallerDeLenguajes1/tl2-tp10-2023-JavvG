@@ -26,7 +26,7 @@ body {
 /* Layout CSS */
 
 body {
-  background-image: url('../wallpaper/wallpaper.jpg');
+  background-image: url('../images/wallpaper.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -39,36 +39,62 @@ main {
   justify-content: center;
   align-items: center;
   height: auto;
+  margin-top: 5%;
 }
 
 .navbar {
-  display: flex !important;
-  flex-direction: row !important;
-  justify-content: center !important;
-  width: 50%;
-  border-radius: 60px;
   backdrop-filter: blur(20px);
-  border: 1px solid gray;
-  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.07) !important;
   color: white;
 }
 
 .navbar-brand {
-  font-size: 1rem;
-}
-
-.navbar-nav {
-  font-size: 0.8rem;
-  margin-right: auto;
-}
-
-.navbar-collapse {
-  justify-content: center;
-}
-
-.nav-item .nav-link {
-  background-color: gray;
   color: white;
+}
+
+.navbar-brand:hover, .navbar-brand:focus {
+  color: white;
+}
+
+.login-button, .logout-button, .nav-button {
+  color: rgb(222, 222, 222);
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.195);
+  border-radius: 60px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgb(168, 168, 168);
+  padding: 10px 25px 10px 25px !important;
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: large;
+  transition: 0.15s ease-in-out;
+}
+
+.login-button:hover, .logout-button:hover, .nav-button:hover, .login-button:focus, .logout-button:focus, .nav-button:focus {
+  transition: 0.15s;
+  border: 1px solid rgba(255, 255, 255, 0.772);
+  backdrop-filter: blur(50px);
+  color: white;
+  box-shadow: 0 0 70px rgba(8, 7, 16, 0.835);
+}
+
+.nav-button {
+  background-color: rgba(255, 255, 255, 0.076) !important;
+  border: 1px solid rgba(168, 168, 168, 0.613);
+  transition: 0.15s ease-in-out;
+}
+
+.nav-button:focus, .nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.068) !important;
+  transition: 0.15s ease-in-out;
+}
+
+.login-button {
+  background-color: #5131c6bb;
+}
+
+.logout-button {
+  background-color: #3e74bbd0;
 }
 
 footer {
@@ -77,8 +103,6 @@ footer {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.07) !important;
   backdrop-filter: blur(20px);
-  border: 1px solid gray;
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
   padding: 10px;
   color: rgb(222, 222, 222) !important;
   letter-spacing: 0.5px;
@@ -100,7 +124,7 @@ footer {
   border-radius: 80px;
   backdrop-filter: blur(20px);
   border: 1px solid gray;
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  box-shadow: 0 4px 8px rgba(8, 7, 16, 0.2);
   padding: 50px 60px;
   color: rgb(222, 222, 222) !important;
   display: flex;
@@ -132,7 +156,7 @@ footer {
 .user-options-list li a {
   color: rgb(222, 222, 222);
   background-color: rgba(255, 255, 255, 0.195) !important;
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  box-shadow: 0 4px 8px rgba(8, 7, 16, 0.2);
   border-radius: 60px;
   backdrop-filter: blur(20px);
   border: 1px solid rgb(168, 168, 168);
@@ -156,7 +180,7 @@ form {
   border-radius: 80px;
   backdrop-filter: blur(20px);
   border: 1px solid gray;
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  box-shadow: 0 4px 8px rgba(8, 7, 16, 0.2);
   padding: 50px 60px;
   color: rgb(222, 222, 222) !important;
   width: 500px;
@@ -211,7 +235,7 @@ input, select {
   margin: 5px;
   color: rgb(222, 222, 222);
   background-color: rgba(255, 255, 255, 0.195) !important;
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  box-shadow: 0 4px 8px rgba(8, 7, 16, 0.2);
   border-radius: 60px;
   backdrop-filter: blur(20px);
   border: 1px solid rgb(168, 168, 168);
