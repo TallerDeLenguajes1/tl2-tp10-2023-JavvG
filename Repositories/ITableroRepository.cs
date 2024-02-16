@@ -10,4 +10,5 @@ public interface ITableroRepository
     List<Tablero> GetAll();
     List<Tablero> GetByUserId(int idUsuario);
     int Delete(int id);
+    void SetDefaultUsuarioId(int idUsuario);
 }

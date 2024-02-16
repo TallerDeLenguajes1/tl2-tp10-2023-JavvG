@@ -223,4 +223,28 @@ public class TableroRepository : ITableroRepository
             throw new ElementNotCreatedException($"Error al actualizar el tablero (ID: {id}) en la base de datos.", ex);
         }
     }
+
+    public void SetDefaultUsuarioId(int idUsuario)
+    {
+        try
+        {
+            var query = "UPDATE Tablero SET id_usuario_propietario = -9999 WHERE id_usuario_propietario = @idUsuario;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+             {
+                connection.Open();
+
+                var command = new SQLiteCommand(query, connection);
+                command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new OperationFailedException($"Error al resetear el usuario propietario del tablero en la base de datos.", ex);
+        }
+    }
 }
