@@ -399,4 +399,28 @@ public class TareaRepository : ITareaRepository
             throw new ElementNotCreatedException($"Error al actualizar la tarea (ID: {id}) en la base de datos.", ex);
         }
     }
+
+    public void SetDefaultUsuarioId(int idUsuario)
+    {
+        try
+        {
+            var query = "UPDATE Tarea SET id_usuario_asignado = -9999 WHERE id_usuario_asignado = @idUsuario;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+             {
+                connection.Open();
+
+                var command = new SQLiteCommand(query, connection);
+                command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new OperationFailedException($"Error al resetear el usuario asignado de la base de datos.", ex);
+        }
+    }
 }

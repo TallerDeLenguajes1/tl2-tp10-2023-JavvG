@@ -12,5 +12,6 @@ public interface ITareaRepository
     List<Tarea> GetByTableroId(int idTablero);
     int Delete(int idTarea);
     void DeleteByTableroId(int idTablero);
+    void SetDefaultUsuarioId(int idUsuario);
     void Assign(int idUsuario, int idTarea);
 }
