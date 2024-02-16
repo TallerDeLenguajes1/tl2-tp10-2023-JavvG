@@ -8,11 +8,13 @@ public class UsuarioRepository : IUsuarioRepository
 {
     private readonly string _connectionString;
     private readonly ITareaRepository _tareaRepository;
+    private readonly ITableroRepository _tableroRepository;
 
-    public UsuarioRepository(string connectionString, ITareaRepository tareaRepository)
+    public UsuarioRepository(string connectionString, ITareaRepository tareaRepository, ITableroRepository tableroRepository)
     {
         _connectionString = connectionString;
         _tareaRepository = tareaRepository;
+        _tableroRepository = tableroRepository;
     }
 
     public void Create(Usuario usuario) 
@@ -169,6 +171,7 @@ public class UsuarioRepository : IUsuarioRepository
         try
         {    
             _tareaRepository.SetDefaultUsuarioId(id);       // Se setean los ID's del usuario asignado en -9999 a las tareas que éste haya tenido
+            _tableroRepository.SetDefaultUsuarioId(id);      // Se setean los ID's del usuario propietario en -9999 a los tableros de los que haya sido dueño
 
             var query = @"DELETE FROM Usuario WHERE Usuario.id = (@id_buscado);";
 
