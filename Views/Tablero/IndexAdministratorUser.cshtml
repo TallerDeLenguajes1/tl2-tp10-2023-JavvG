@@ -31,12 +31,19 @@
                     <tr>
                         <td>@T.Nombre</td>
                         <td>@T.Descripcion</td>
-                        @foreach(Usuario user in Model.UsuariosRegistrados)
+                        @if(T.IdUsuarioPropietario != -9999)
                         {
-                            if(user.Id == T.IdUsuarioPropietario)
+                            foreach(Usuario user in Model.UsuariosRegistrados)
                             {
-                                <td>@user.Nombre</td>
+                                if(user.Id == T.IdUsuarioPropietario)
+                                {
+                                    <td>@user.Nombre</td>
+                                }
                             }
+                        }
+                        else
+                        {
+                            <td>No tiene</td>
                         }
                         <td>
                             <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Editar</a>

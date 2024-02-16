@@ -21,7 +21,7 @@
                 <tr>
                     <td>@Model.TareaSeleccionada.Nombre</td>
                     <td>@Model.TareaSeleccionada.Descripcion</td>
-                    @if(Model.TareaSeleccionada.IdUsuarioAsignado != null)
+                    @if(Model.TareaSeleccionada.IdUsuarioAsignado != -9999)
                     {
                         foreach(Usuario user in Model.UsuariosRegistrados)
                         {
@@ -39,7 +39,7 @@
                             <div style="background-color: @Model.TareaSeleccionada.Color; width: 30px; height: 30px; border-radius: 50%;"></div>
                         </td>
                     <td>@Model.TareaSeleccionada.Estado</td>
-                    @if(Model.TareaSeleccionada.IdTablero != null)
+                    @if(Model.TareaSeleccionada.IdTablero != -9999)
                     {
                         foreach(Tablero board in Model.TablerosRegistrados)
                         {
