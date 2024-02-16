@@ -83,33 +83,82 @@ public class TableroRepository : ITableroRepository
 
     public Tablero GetById(int id)
     {
-        List<Tablero> tableros = new();
-        Tablero tableroBuscado = new();
-
-        tableros = GetAll();
-        tableroBuscado = tableros.FirstOrDefault(T => T.Id == id);
-
-        if(tableroBuscado.Nombre == null)
+        try
         {
-            throw new Exception($"Error al encontrar el tablero (ID: {id}) en la base de datos.");
+            var query = "SELECT * FROM Tablero WHERE id = @id_buscado;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+
+                var command = new SQLiteCommand(query, connection);
+                command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Tablero
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            IdUsuarioPropietario = Convert.ToInt32(reader["id_usuario_propietario"]),
+                            Nombre = reader["nombre"].ToString(),
+                            Descripcion = reader["descripcion"].ToString()
+                        };
+                    }
+                }
+
+                connection.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new ElementNotFoundException($"Error al encontrar el tablero (ID: {id}) en la base de datos.", ex);
         }
 
-        return tableroBuscado;
+        return null;    // Devuelve null si no se encuentra el tablero
     }
 
     public List<Tablero> GetByUserId(int idUsuario)
     {
-        List<Tablero> tableros = new();
+        List<Tablero> tableros = new List<Tablero>();
 
-        tableros = GetAll();
-        List<Tablero> tablerosBuscados = tableros.FindAll(T => T.IdUsuarioPropietario == idUsuario);
-
-        if(tableros.Count() == 0)
+        try
         {
-            throw new Exception($"Error al encontrar los tableros asociados al usuario (ID: {idUsuario}) en la base de datos.");
+            var query = "SELECT * FROM Tablero WHERE id_usuario_propietario = @idUsuario;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+
+                var command = new SQLiteCommand(query, connection);
+                command.Parameters.Add(new SQLiteParameter("@idUsuario", idUsuario));
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var tablero = new Tablero
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            IdUsuarioPropietario = Convert.ToInt32(reader["id_usuario_propietario"]),
+                            Nombre = reader["nombre"].ToString(),
+                            Descripcion = reader["descripcion"].ToString()
+                        };
+
+                        tableros.Add(tablero);
+                    }
+                }
+
+                connection.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new ElementNotFoundException($"Error al encontrar los tableros asociados al usuario (ID: {idUsuario}) en la base de datos.", ex);
         }
 
-        return tablerosBuscados;
+        return tableros;
     }
 
     public int Delete(int id)

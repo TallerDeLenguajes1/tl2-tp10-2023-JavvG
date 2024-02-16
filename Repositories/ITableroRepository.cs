@@ -4,12 +4,10 @@ namespace tl2_tp10_2023_JavvG.Repositories;
 
 public interface ITableroRepository 
 {
-
-    public Tablero Create(Tablero tablero);
-    public void Update(int id, Tablero tablero);
-    public Tablero GetById(int id);
-    public List<Tablero> GetAll();
-    public List<Tablero> GetByUserId(int idUsuario);
-    public int Delete(int id);
-    
+    Tablero Create(Tablero tablero);
+    void Update(int id, Tablero tablero);
+    Tablero GetById(int id);
+    List<Tablero> GetAll();
+    List<Tablero> GetByUserId(int idUsuario);
+    int Delete(int id);
 }

@@ -120,13 +120,37 @@ public class UsuarioRepository : IUsuarioRepository
 
     public Usuario GetById(int id) 
     {
-        List<Usuario> usuarios = new();
-        Usuario usuarioBuscado = new();
+        Usuario usuarioBuscado = new Usuario();
 
         try
         {
-            usuarios = GetAll();
-            usuarioBuscado = usuarios.FirstOrDefault(U => U.Id == id);
+            var query = @"SELECT * FROM Usuario WHERE id = @id_buscado;";
+
+            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            {
+                connection.Open();
+
+                var command = new SQLiteCommand(query, connection);
+                command.Parameters.Add(new SQLiteParameter("@id_buscado", id));
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        usuarioBuscado.Id = Convert.ToInt32(reader["id"]);
+                        usuarioBuscado.Nombre = reader["nombre_de_usuario"].ToString();
+                        usuarioBuscado.Password = reader["password"].ToString();
+                        string read = reader["rol"].ToString();
+                        Rol rolUsuario;
+                        if (Enum.TryParse(read, out rolUsuario))
+                        {
+                            usuarioBuscado.Rol = rolUsuario;
+                        }
+                    }
+                }
+
+                connection.Close();
+            }
         }
         catch(Exception ex)
         {
