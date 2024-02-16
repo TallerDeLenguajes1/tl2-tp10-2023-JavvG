@@ -26,7 +26,7 @@
                     <tr>
                         <td>@T.Nombre</td>
                         <td>@T.Descripcion</td>
-                        @if(T.IdUsuarioAsignado != null)
+                        @if(T.IdUsuarioAsignado != -9999)
                         {
                             foreach(Usuario user in Model.UsuariosRegistrados)
                             {
