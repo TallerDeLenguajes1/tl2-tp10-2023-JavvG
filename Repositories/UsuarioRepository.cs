@@ -7,10 +7,12 @@ namespace tl2_tp10_2023_JavvG.Repositories;
 public class UsuarioRepository : IUsuarioRepository 
 {
     private readonly string _connectionString;
+    private readonly ITareaRepository _tareaRepository;
 
-    public UsuarioRepository(string connectionString) 
+    public UsuarioRepository(string connectionString, ITareaRepository tareaRepository)
     {
         _connectionString = connectionString;
+        _tareaRepository = tareaRepository;
     }
 
     public void Create(Usuario usuario) 
@@ -166,6 +168,8 @@ public class UsuarioRepository : IUsuarioRepository
 
         try
         {    
+            _tareaRepository.SetDefaultUsuarioId(id);       // Se setean los ID's del usuario asignado en -9999 a las tareas que éste haya tenido
+
             var query = @"DELETE FROM Usuario WHERE Usuario.id = (@id_buscado);";
 
             using (SQLiteConnection connection = new SQLiteConnection(_connectionString)) 
