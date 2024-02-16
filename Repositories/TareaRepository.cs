@@ -340,6 +340,23 @@ public class TareaRepository : ITareaRepository
         return result;
     }
 
+    public void DeleteByTableroId(int idTablero)
+    {
+        try
+        {
+            var tareasDeEsteTablero = GetByTableroId(idTablero);    // Se obtienen todas las tareas asociadas a este tablero
+
+            foreach (Tarea task in tareasDeEsteTablero)
+            {
+                Delete(task.Id);    // Elimina cada tarea asociada al tablero
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new OperationFailedException($"Error al eliminar las tareas asociadas al tablero (ID: {idTablero}) de la base de datos.", ex);
+        }
+    }
+
     public void Update(int id, Tarea tarea) 
     {
         
