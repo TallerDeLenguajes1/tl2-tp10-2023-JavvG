@@ -14,6 +14,10 @@ public class ListarTareasViewModel
 
     public Tarea TareaSeleccionada { get; set; }
 
+    public List<Tablero> TablerosRegistrados { get; set; }
+
+    public List<Usuario> UsuariosRegistrados { get; set; }
+
     public ListarTareasViewModel() 
     {
         Tareas = new();
@@ -27,16 +31,41 @@ public class ListarTareasViewModel
         IdUsuario = idUsuario;
     }
 
+    public ListarTareasViewModel(List<Tarea> tareas, List<Tarea> tareasCreadas, int idUsuario, List<Usuario> usuarios, List<Tablero> tableros) 
+    {
+        Tareas = tareas;
+        TareasCreadas = tareasCreadas;
+        IdUsuario = idUsuario;
+        UsuariosRegistrados = usuarios;
+        TablerosRegistrados = tableros;
+    }
+
     public ListarTareasViewModel(List<Tarea> tareas, int idUsuario)
     {
         Tareas = tareas;
         IdUsuario = idUsuario;
     }
 
+    public ListarTareasViewModel(List<Tarea> tareas, int idUsuario, List<Usuario> usuarios, List<Tablero> tableros)
+    {
+        Tareas = tareas;
+        IdUsuario = idUsuario;
+        UsuariosRegistrados = usuarios;
+        TablerosRegistrados = tableros;
+    }
+
     public ListarTareasViewModel(Tarea tarea, int idUsuario)
     {
         TareaSeleccionada = tarea;
         IdUsuario = idUsuario;
+    }
+
+    public ListarTareasViewModel(Tarea tarea, int idUsuario, List<Usuario> usuarios, List<Tablero> tableros)
+    {
+        TareaSeleccionada = tarea;
+        IdUsuario = idUsuario;
+        UsuariosRegistrados = usuarios;
+        TablerosRegistrados = tableros;
     }
 
 }
