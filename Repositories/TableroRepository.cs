@@ -7,10 +7,12 @@ namespace tl2_tp10_2023_JavvG.Repositories;
 public class TableroRepository : ITableroRepository
 {
     private readonly string _connectionString;
+    private readonly ITareaRepository _tareaRepository;
 
-    public TableroRepository(string connectionString)
+    public TableroRepository(string connectionString, ITareaRepository tareaRepository)
     {
         _connectionString = connectionString;
+        _tareaRepository = tareaRepository;
     }
 
     public Tablero Create(Tablero tablero)
@@ -167,6 +169,10 @@ public class TableroRepository : ITableroRepository
         
         try
         {
+            _tareaRepository.DeleteByTableroId(id);
+
+            // Se procede con la eliminación del tablero
+
             var query = @"DELETE FROM Tablero WHERE Tablero.id = (@id_buscado);";
 
             using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
