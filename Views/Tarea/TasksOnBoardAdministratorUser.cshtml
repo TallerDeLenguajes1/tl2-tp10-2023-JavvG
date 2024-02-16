@@ -17,7 +17,6 @@
                     <th scope="col">Usuario asignado</th>
                     <th scope="col">Color</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">Tablero</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>
@@ -45,20 +44,6 @@
                             <div style="background-color: @T.Color; width: 30px; height: 30px; border-radius: 50%;"></div>
                         </td>
                         <td>@T.Estado</td>
-                        @if(T.IdTablero != null)
-                        {
-                            foreach(Tablero board in Model.TablerosRegistrados)
-                            {
-                                if(board.Id == T.IdTablero)
-                                {
-                                    <td>@board.Nombre</td>
-                                }
-                            }
-                        }
-                        else
-                        {
-                            <td>No tiene</td>
-                        } 
                         <td>
                             <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Editar</a>
                             <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar</a>
