@@ -100,11 +100,11 @@ public class TareaController : Controller
             
             if(isAdmin())
             {
-                return View("TasksOnBoardAdministratorUser", new ListarTareasViewModel(tareasDeTablero, idUsuario, usuarios, tableros));
+                return View("TasksOnBoardAdministratorUser", new ListarTareasViewModel(tareasDeTablero, idUsuario, usuarios, tableros, idTablero));
             }
             else
             {
-                return View("TasksOnBoardOperatorUser", new ListarTareasViewModel(tareasDeTablero, tareasCreadas, idUsuario, usuarios, tableros));
+                return View("TasksOnBoardOperatorUser", new ListarTareasViewModel(tareasDeTablero, tareasCreadas, idUsuario, usuarios, tableros, idTablero));
             }
             
         }
