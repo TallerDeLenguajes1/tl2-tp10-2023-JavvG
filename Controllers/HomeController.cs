@@ -19,7 +19,7 @@ public class HomeController : Controller
         {
             // Se verifica que el usuario esté logueado correctamente
 
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") 
+            if(HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") 
             {
                 TempData["ErrorMessage"] = "Inicie sesión antes de acceder a este sitio";
                 return RedirectToRoute(new { controller = "Login", action = "Index" });

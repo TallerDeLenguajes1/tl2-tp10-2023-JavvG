@@ -30,7 +30,7 @@ public class TareaController : Controller
     {
         try
         {
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+            if(notLoggedUser()) return redirectToLogin();
             
             int idUsuario = int.Parse(HttpContext.Session.GetString("id"));
 
@@ -77,6 +77,7 @@ public class TareaController : Controller
 
     public IActionResult ShowSingleTask(int idTarea, int idUsuario)
     {
+        if(notLoggedUser()) return redirectToLogin();
         var tarea = tareaRepository.GetById(idTarea);
         var usuarios = usuarioRepository.GetAll();
         var tableros = tableroRepository.GetAll();
@@ -87,7 +88,7 @@ public class TareaController : Controller
     {
         try
         {
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+            if(notLoggedUser()) return redirectToLogin();
 
             List<Tarea> tareasDeTablero = tareaRepository.GetByTableroId(idTablero);
             List<Tablero> tablerosDeUsuario = tableroRepository.GetByUserId(idUsuario);
@@ -120,6 +121,8 @@ public class TareaController : Controller
     {
         try
         {
+            if(notLoggedUser()) return redirectToLogin();
+            
             List<Usuario> usuarios = usuarioRepository.GetAll();
             List<Tablero> tableros = new();
 
@@ -173,6 +176,8 @@ public class TareaController : Controller
     {
         try
         {
+            if(notLoggedUser()) return redirectToLogin();
+
             List<Usuario> usuarios = usuarioRepository.GetAll();
             List<Tablero> tableros = new();
 
@@ -231,6 +236,8 @@ public class TareaController : Controller
     {
         try
         {
+            if(notLoggedUser()) return redirectToLogin();
+            
             return View(tareaRepository.GetById(idTarea));
         }
         catch(Exception ex)
@@ -261,6 +268,13 @@ public class TareaController : Controller
         }
     }
 
+    // Método que verifica que haya una sesión existente 
+
+    private bool notLoggedUser()
+    {
+        return (HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador");
+    }
+
     // Método que verifica que el usuario logueado sea 'administrador'
 
     private bool isAdmin()
@@ -270,7 +284,7 @@ public class TareaController : Controller
 
     // Método que redirecciona a la pantalla de inicio mostrando un mensaje de error correspondiente
 
-    private IActionResult RedirectOperatorUser()
+    private IActionResult redirectOperatorUser()
     {
         TempData["ErrorMessage"] = "No puedes acceder a este sitio porque no eres administrador";        // Almacena el mensaje en TempData (se utiliza para pasar datos entre acciones durante redirecciones) para mostrarlo en la página de inicio
         return RedirectToRoute(new { controller = "Tablero", action = "Index" });
@@ -278,7 +292,7 @@ public class TareaController : Controller
 
     // Método que redirecciona a la pantalla de inicio de sesión
 
-    private IActionResult RedirectToLogin()
+    private IActionResult redirectToLogin()
     {
         TempData["ErrorMessage"] = "Inicie sesión antes de acceder a este sitio";
         return RedirectToRoute(new { controller = "Login", action = "Index" });

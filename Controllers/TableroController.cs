@@ -29,7 +29,7 @@ public class TableroController : Controller
     {
         try
         {
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+            if(notLoggedUser()) return redirectToLogin();
 
             int idUsuario = int.Parse(HttpContext.Session.GetString("id"));
 
@@ -75,7 +75,7 @@ public class TableroController : Controller
     {
         try
         {
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+            if(notLoggedUser()) return redirectToLogin();
 
             List<Usuario> usuarios = usuarioRepository.GetAll();
 
@@ -94,7 +94,6 @@ public class TableroController : Controller
         try
         {
             if(!ModelState.IsValid) return RedirectToAction("Index");
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
             var tablero = new Tablero(tableroVM);
             tableroRepository.Create(tablero);
             return RedirectToAction("Index");
@@ -112,8 +111,7 @@ public class TableroController : Controller
     {
         try
         {
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
-
+            if(notLoggedUser()) return redirectToLogin();
             var tablero = tableroRepository.GetById(idTablero);
             var usuarios = usuarioRepository.GetAll();
 
@@ -132,7 +130,6 @@ public class TableroController : Controller
         try
         {
             if(!ModelState.IsValid) return RedirectToAction("Index");
-            if(!User.Identity.IsAuthenticated && HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
             var tablero = new Tablero(tableroVM);
             tableroRepository.Update(tablero.Id, tablero);
             return RedirectToAction("Index");
@@ -151,6 +148,7 @@ public class TableroController : Controller
     {
         try
         {
+            if(notLoggedUser()) return redirectToLogin();
             return View(tableroRepository.GetById(idTablero));
         }
         catch(Exception ex)
@@ -181,6 +179,13 @@ public class TableroController : Controller
         }
     }
 
+    // Método que verifica que haya una sesión existente 
+
+    private bool notLoggedUser()
+    {
+        return (HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador");
+    }
+
     // Método que verifica que el usuario logueado sea 'administrador'
 
     private bool isAdmin()
@@ -190,7 +195,7 @@ public class TableroController : Controller
 
     // Método que redirecciona a la pantalla de inicio mostrando un mensaje de error correspondiente
 
-    private IActionResult RedirectOperatorUser()
+    private IActionResult redirectOperatorUser()
     {
         TempData["ErrorMessage"] = "No puedes acceder a este sitio porque no eres administrador";        // Almacena el mensaje en TempData (se utiliza para pasar datos entre acciones durante redirecciones) para mostrarlo en la página de inicio
         return RedirectToRoute(new { controller = "Tablero", action = "Index" });
@@ -198,7 +203,7 @@ public class TableroController : Controller
 
     // Método que redirecciona a la pantalla de inicio de sesión
 
-    private IActionResult RedirectToLogin()
+    private IActionResult redirectToLogin()
     {
         TempData["ErrorMessage"] = "Inicie sesión antes de acceder a este sitio";
         return RedirectToRoute(new { controller = "Login", action = "Index" });

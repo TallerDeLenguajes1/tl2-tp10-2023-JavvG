@@ -27,11 +27,11 @@ public class UsuarioController : Controller
         {
             // Se verifica que el usuario esté logueado correctamente
 
-            if(HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador") return RedirectToLogin();
+            if(notLoggedUser()) return redirectToLogin();
 
             // El acceso a todos los usuarios esta permitido sólo para el usuario 'administrador'
 
-            if(!isAdmin()) return RedirectOperatorUser();
+            if(!isAdmin()) return redirectOperatorUser();
 
             var users = usuarioRepository.GetAll();
             var usersVM = new ListarUsuariosViewModel(users);
@@ -53,7 +53,8 @@ public class UsuarioController : Controller
     {
         try
         {
-            if(!isAdmin()) return RedirectOperatorUser();
+            if(notLoggedUser()) return redirectToLogin();
+            if(!isAdmin()) return redirectOperatorUser();
             return View(new CrearUsuarioViewModel());
         }
         catch(Exception ex)
@@ -69,7 +70,7 @@ public class UsuarioController : Controller
         try
         {
             if(!ModelState.IsValid) return RedirectToAction("Index");   // Si el modelo no está en su estado válido, se redirecciona a la página de inicio (verifica que no haya errores de validación)   
-            if(!isAdmin()) return RedirectOperatorUser();  // Si el usuario no es administrador, es redirigido a la página de inicio       
+            if(!isAdmin()) return redirectOperatorUser();  // Si el usuario no es administrador, es redirigido a la página de inicio       
 
             var usuario = new Usuario(usuarioVM);
             usuarioRepository.Create(usuario);
@@ -89,7 +90,8 @@ public class UsuarioController : Controller
     {
         try
         {
-            if(!isAdmin()) return RedirectOperatorUser();
+            if(notLoggedUser()) return redirectToLogin();
+            if(!isAdmin()) return redirectOperatorUser();
 
             var usuario = usuarioRepository.GetById(id);
             var usuarioVM = new ModificarUsuarioViewModel(usuario);
@@ -109,7 +111,7 @@ public class UsuarioController : Controller
         try
         {
             if(!ModelState.IsValid) return RedirectToAction("Index");
-            if(!isAdmin()) return RedirectOperatorUser();
+            if(!isAdmin()) return redirectOperatorUser();
 
             var usuario = new Usuario(usuarioVM);
             usuarioRepository.Update(id, usuario);
@@ -129,7 +131,8 @@ public class UsuarioController : Controller
     {
         try
         {
-            if(!isAdmin()) return RedirectOperatorUser();
+            if(notLoggedUser()) return redirectToLogin();
+            if(!isAdmin()) return redirectOperatorUser();
             return View(usuarioRepository.GetById(id));
         }
         catch(Exception ex)
@@ -160,6 +163,13 @@ public class UsuarioController : Controller
         }
     }
 
+    // Método que verifica que haya una sesión existente 
+
+    private bool notLoggedUser()
+    {
+        return (HttpContext.Session.GetString("rol") != "administrador" && HttpContext.Session.GetString("rol") != "operador");
+    }
+
     // Método que verifica que el usuario logueado sea 'administrador'
 
     private bool isAdmin()
@@ -169,7 +179,7 @@ public class UsuarioController : Controller
 
     // Método que redirecciona a la pantalla de inicio mostrando un mensaje de error correspondiente
 
-    private IActionResult RedirectOperatorUser()
+    private IActionResult redirectOperatorUser()
     {
         TempData["ErrorMessage"] = "No puedes acceder a este sitio porque no eres administrador";        // Almacena el mensaje en TempData (se utiliza para pasar datos entre acciones durante redirecciones) para mostrarlo en la página de inicio
         return RedirectToRoute(new { controller = "Tablero", action = "Index" });
@@ -177,7 +187,7 @@ public class UsuarioController : Controller
 
     // Método que redirecciona a la pantalla de inicio de sesión
 
-    private IActionResult RedirectToLogin()
+    private IActionResult redirectToLogin()
     {
         TempData["ErrorMessage"] = "Inicie sesión antes de acceder a este sitio";
         return RedirectToRoute(new { controller = "Login", action = "Index" });
