@@ -7,7 +7,7 @@
 <div class="text-center">
     <form asp-controller="Usuario" asp-action="DeleteConfirmed" method="post">
         <h1>@ViewData["Title"]</h1>
-        <h4>¿Desea confirmar la eliminación del usuario "@Model.Nombre"?</h4>
+        <h2>¿Desea confirmar la eliminación del usuario "@Model.Nombre"?</h2>
         <div>
             <button type="submit" class="btn btn-danger">Eliminar</button>
             <input hidden asp-for="@Model.Id">

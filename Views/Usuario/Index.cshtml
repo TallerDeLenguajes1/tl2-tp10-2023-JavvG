@@ -20,8 +20,8 @@
                     <tr>
                         <td>@U.Nombre</td>
                         <td class="options-cell">
-                            <a class="modificar" asp-controller="Usuario" asp-action="Update" asp-route-id="@U.Id">Editar</a>
-                            <a class="eliminar" asp-controller="Usuario" asp-action="Delete" asp-route-id="@U.Id">Eliminar</a>
+                            <a class="modificar" asp-controller="Usuario" asp-action="Update" asp-route-id="@U.Id">Editar<i class="bi bi-pen"></i></a>
+                            <a class="eliminar" asp-controller="Usuario" asp-action="Delete" asp-route-id="@U.Id">Eliminar<i class="bi bi-x-circle-fill"></i></a>
                         </td>
                     </tr>
                 }
@@ -31,7 +31,7 @@
 </div>
 
 <div class="d-grid gap-2">
-    <a asp-controller="Usuario" asp-action="Create"><button class="btn btn-primary boton" type="button">Añadir un nuevo usuario </button></a>
+    <a asp-controller="Usuario" asp-action="Create"><button class="btn btn-primary boton" type="button">Añadir un nuevo usuario<i class="bi bi-plus-circle"></i></button></a>
 </div>
 
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }

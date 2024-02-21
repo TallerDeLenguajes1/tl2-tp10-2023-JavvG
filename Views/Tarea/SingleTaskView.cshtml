@@ -15,7 +15,7 @@
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
+                    <th scope="col" class="description-cell">Descripción</th>
                     <th scope="col">Usuario asignado</th>
                     <th scope="col">Color</th>
                     <th scope="col">Estado</th>
@@ -63,8 +63,8 @@
                     @if(Model.TareaSeleccionada.IdUsuarioAsignado == Model.IdUsuario || session.GetString("rol") == "administrador" || Model.TareasCreadas != null && Model.TareasCreadas.Any(task => task.Id == Model.TareaSeleccionada.Id))
                     {
                         <td class="options-cell">
-                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@Model.TareaSeleccionada.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=2>Editar</a>
-                            <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@Model.TareaSeleccionada.Id">Eliminar</a>
+                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@Model.TareaSeleccionada.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=2>Editar<i class="bi bi-pen"></i></a>
+                            <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@Model.TareaSeleccionada.Id">Eliminar<i class="bi bi-x-circle-fill"></i></a>
                         </td>
                     }
                     else 
@@ -80,7 +80,7 @@
 
 <div class="d-grid gap-2">
     <a asp-controller="Tarea" asp-action="Create" asp-route-idUsuario="@Model.IdUsuario">
-        <button class="btn btn-primary boton" type="button">Añadir una nueva tarea </button>
+        <button class="btn btn-primary boton" type="button">Añadir una nueva tarea<i class="bi bi-plus-circle"></i></button>
     </a>
 </div>
 

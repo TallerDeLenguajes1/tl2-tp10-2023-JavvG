@@ -13,7 +13,7 @@
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
+                    <th scope="col" class="description-cell">Descripción</th>
                     <th scope="col">Usuario asignado</th>
                     <th scope="col">Color</th>
                     <th scope="col">Estado</th>
@@ -45,9 +45,9 @@
                         </td>
                         <td>@T.Estado</td>
                         <td class="options-cell">
-                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Editar</a>
-                            <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar</a>
-                            <a class="ver" asp-controller="Tarea" asp-action="ShowSingleTask" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Detalles</a>
+                            <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Editar<i class="bi bi-pen"></i></a>
+                            <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar<i class="bi bi-x-circle-fill"></i></a>
+                            <a class="ver" asp-controller="Tarea" asp-action="ShowSingleTask" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Detalles<i class="bi bi-caret-left-fill"></i></a>
                         </td>
                     </tr>
                 }
@@ -58,7 +58,7 @@
 
 <div class="d-grid gap-2">
     <a asp-controller="Tarea" asp-action="Create" asp-route-idUsuario="@Model.IdUsuario" asp-route-idTablero="@Model.IdTablero">
-        <button class="btn btn-primary boton" type="button">Añadir una nueva tarea </button>
+        <button class="btn btn-primary boton" type="button">Añadir una nueva tarea<i class="bi bi-plus-circle"></i></button>
     </a>
 </div>
 

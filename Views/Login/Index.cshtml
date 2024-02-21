@@ -13,7 +13,7 @@
 
 <div class="text-center">
     <form asp-controller="Login" asp-action="Login" method="post" autocomplete="off">
-        <h2 class="display-4">@ViewData["Title"]</h2>
+        <h1 class="display-4">@ViewData["Title"]</h1>
         <label asp-for="@Model.NombreUsuario"></label>
         <input asp-for="@Model.NombreUsuario" class="form-control"/>
         <span asp-validation-for="@Model.NombreUsuario" class="text-danger"></span>  
