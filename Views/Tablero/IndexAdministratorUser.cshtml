@@ -30,7 +30,7 @@
                 {
                     <tr>
                         <td>@T.Nombre</td>
-                        <td>@T.Descripcion</td>
+                        <td class="description-cell">@T.Descripcion</td>
                         @if(T.IdUsuarioPropietario != -9999)
                         {
                             foreach(Usuario user in Model.UsuariosRegistrados)
@@ -45,10 +45,10 @@
                         {
                             <td>No tiene</td>
                         }
-                        <td>
+                        <td class="options-cell">
                             <a class="modificar" asp-controller="Tablero" asp-action="Update" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Editar</a>
                             <a class="eliminar" asp-controller="Tablero" asp-action="Delete" asp-route-idTablero="@T.Id">Eliminar</a>
-                            <a class="verTareas" asp-controller="Tarea" asp-action="ShowTasksOnBoard" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver tareas</a>
+                            <a class="verTareas" asp-controller="Tarea" asp-action="ShowTasksOnBoard" asp-route-idTablero="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver</a>
                         </td>
                     </tr>
                 }

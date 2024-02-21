@@ -13,7 +13,7 @@
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
-                    <th scope="col" class="short-column">Descripción</th>
+                    <th scope="col">Descripción</th>
                     <th scope="col">Usuario asignado</th>
                     <th scope="col">Color</th>
                     <th scope="col">Estado</th>
@@ -25,7 +25,7 @@
                 {
                     <tr>
                         <td>@T.Nombre</td>
-                        <td>@T.Descripcion</td>
+                        <td class="description-cell">@T.Descripcion</td>
                         @if(T.IdUsuarioAsignado != -9999)
                         {
                             foreach(Usuario user in Model.UsuariosRegistrados)
@@ -40,24 +40,16 @@
                         {
                             <td>No tiene</td>
                         } 
-                        <td style="overflow: hidden;">
+                        <td class="color-cell" style="overflow: hidden;">
                             <div style="background-color: @T.Color; width: 30px; height: 30px; border-radius: 50%;"></div>
                         </td>
                         <td>@T.Estado</td>
-                        @if(T.IdUsuarioAsignado == Model.IdUsuario)
+                        @if(T.IdUsuarioAsignado == Model.IdUsuario || Model.TareasCreadas != null && Model.TareasCreadas.Any(task => task.Id == T.Id))
                         {
-                            <td>
-                                <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=2>Editar</a>
-                                <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar</a>
-                                <a class="ver" asp-controller="Tarea" asp-action="ShowSingleTask" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver detalles</a>
-                            </td>
-                        }
-                        else if(Model.TareasCreadas != null && Model.TareasCreadas.Any(task => task.Id == T.Id))
-                        {
-                            <td>
+                            <td class="options-cell">
                                 <a class="modificar" asp-controller="Tarea" asp-action="Update" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario" asp-route-taskType=1>Editar</a>
                                 <a class="eliminar" asp-controller="Tarea" asp-action="Delete" asp-route-idTarea="@T.Id">Eliminar</a>
-                                <a class="ver" asp-controller="Tarea" asp-action="ShowSingleTask" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Ver detalles</a>
+                                <a class="ver" asp-controller="Tarea" asp-action="ShowSingleTask" asp-route-idTarea="@T.Id" asp-route-idUsuario="@Model.IdUsuario">Detalles</a>
                             </td>
                         }
                         else 
