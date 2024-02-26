@@ -24,6 +24,7 @@
                     <option value="@estado">@estado</option>
                 }
             </select>
+            <span asp-validation-for="@Model.Estado" class="text-danger"></span>  
         </div>
         <button type="submit" class="btn btn-primary">Modificar</button>
         <a asp-controller="Tarea" asp-action="Index" class="btn btn-secondary">Cancelar</a>

@@ -25,6 +25,7 @@
                         <option value="@user.Id">@user.Nombre</option>
                     }
                 </select>
+                <span asp-validation-for="@Model.IdUsuarioPropietario" class="text-danger"></span>  
             }
             else
             {
@@ -32,8 +33,10 @@
             }
             <label for="nombre" class="form-label">Nombre</label>
             <input asp-for="@Model.Nombre" type="text" class="form-control" id="nombre" required>
+            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>  
             <label for="descripcion" class="form-label">Descripción</label>
             <input asp-for="@Model.Descripcion" type="text" class="form-control" id="descripcion" required>
+            <span asp-validation-for="@Model.Descripcion" class="text-danger"></span>  
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
         <a asp-controller="Tablero" asp-action="Index" class="btn btn-secondary">Cancelar</a>

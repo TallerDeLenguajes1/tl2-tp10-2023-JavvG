@@ -12,8 +12,10 @@
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
             <input asp-for="@Model.Nombre" type="text" class="form-control" id="nombre" required>
+            <span asp-validation-for="@Model.Nombre" class="text-danger"></span>  
             <label for="password" class="form-label">Contraseña</label>
             <input asp-for="@Model.Password" type="text" class="form-control" id="password" required>
+            <span asp-validation-for="@Model.Password" class="text-danger"></span>  
             <label for="rol" class="form-label">Seleccione el rol</label>
             <select asp-for="@Model.Rol" class="form-control" id="rol" required>
                 @foreach (var rol in Enum.GetValues(typeof(Rol)))
@@ -21,6 +23,7 @@
                     <option value="@rol">@rol</option>
                 }
             </select>
+            <span asp-validation-for="@Model.Rol" class="text-danger"></span>  
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
         <a asp-controller="Usuario" asp-action="Index" class="btn btn-secondary">Cancelar</a>
