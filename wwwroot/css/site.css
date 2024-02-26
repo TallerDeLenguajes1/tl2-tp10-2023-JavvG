@@ -115,6 +115,31 @@ i {
   background-color: #623f26 !important;
 }
 
+.navigation-btn {
+  position: fixed;
+  top: 10%;
+  left: 20px;
+  z-index: 1000;
+  width: 45px;
+  height: 45px;
+  font-size: large;
+  background-color: #00000045 !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.045) !important;
+  color: #dedede !important;
+  text-decoration: none;
+  border-radius: 40px;
+  border: none;
+  padding: 2px;
+  transition: 0.3s;
+}
+
+.navigation-btn:focus, .navigation-btn:hover {
+  color: white;
+  background-color: #2c303b !important;
+  transform: scale(1.2);
+}
+
 footer {
   position: fixed;
   bottom: 0;
